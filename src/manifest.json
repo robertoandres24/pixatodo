@@ -11,10 +11,11 @@
     "default_title": "pixatodo",
     "default_popup": "popup/popup.html"
   },
+  "chrome_url_overrides": {
+    "newtab": "newtab/newtab.html"
+  },
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   },
   "options_ui": {
     "page": "options/options.html",

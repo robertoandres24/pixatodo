@@ -1,6 +1,6 @@
 <template>
   <div v-if="selectedImage" class="main-screen">
-    <div class="hero-bg" :style="{ background: `radial-gradient(transparent, black), center / cover no-repeat url('${selectedImage}')` }"></div>
+    <div :style="{ background: `url(${selectedImage}) center/cover no-repeat` }" class="hero-bg"></div>
     <div @click="getRandomBg()" class="change-bg-icon"></div>
   </div>
 </template>
@@ -14,16 +14,14 @@ export default {
       selectedImage: '',
     };
   },
-  computed: {
+  async mounted() {
+    this.images = await this.getApiImages();
+    this.selectedImage = this.images[this.randomNumber()].largeImageURL;
+  },
+  methods: {
     randomNumber() {
       return Math.floor(Math.random() * 200) + 1;
     },
-  },
-  async mounted() {
-    this.images = await this.getApiImages();
-    this.getRandomBg();
-  },
-  methods: {
     getApiImages() {
       return new Promise((resolve, reject) => {
         axios
@@ -42,19 +40,27 @@ export default {
       });
     },
     getRandomBg() {
-      this.selectedImage = this.images[this.randomNumber].largeImageURL;
+      this.selectedImage = this.images[this.randomNumber()].largeImageURL;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.main-screen {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+}
 .hero-bg {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 5em 1em #000;
 }
 .change-bg-icon {
   background: url('/static/images/change-bg-icon.svg');

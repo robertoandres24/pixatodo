@@ -1,6 +1,6 @@
 <template>
-  <div class="main-screen">
-    <div class="hero-bg" :style="{ background: `radial-gradient(transparent, black), center / cover no-repeat url('${image}')` }"></div>
+  <div v-if="selectedImage" class="main-screen">
+    <div class="hero-bg" :style="{ background: `radial-gradient(transparent, black), center / cover no-repeat url('${selectedImage}')` }"></div>
     <div @click="getRandomBg()" class="change-bg-icon"></div>
   </div>
 </template>
@@ -10,41 +10,39 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      image: '',
+      images: [],
+      selectedImage: '',
     };
-  },
-  watch: {
-    // whenever question changes, this function will run
-    image: function(newImage, oldImage) {
-      console.log(newImage, oldImage);
-    },
   },
   computed: {
     randomNumber() {
       return Math.floor(Math.random() * 200) + 1;
     },
   },
-  mounted() {
+  async mounted() {
+    this.images = await this.getApiImages();
     this.getRandomBg();
   },
   methods: {
+    getApiImages() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('https://pixabay.com/api/', {
+            params: {
+              key: '11002686-685122bed59c07caf3ac56d3f',
+              per_page: 200,
+            },
+          })
+          .then(response => {
+            resolve(response.data.hits);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     getRandomBg() {
-      console.log('clicked');
-      // Optionally the request above could also be done as
-      axios
-        .get('https://pixabay.com/api/', {
-          params: {
-            key: '11002686-685122bed59c07caf3ac56d3f',
-            per_page: 200,
-          },
-        })
-        .then(response => {
-          console.log(response.data.hits);
-          this.image = response.data.hits[this.randomNumber].largeImageURL;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.selectedImage = this.images[this.randomNumber].largeImageURL;
     },
   },
 };

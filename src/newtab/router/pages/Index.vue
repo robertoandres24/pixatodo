@@ -1,5 +1,5 @@
 <template>
-  <p>Hello from new tab</p>
+  <div><img class="hero-bg" src="/static/images/hero-bg.jpg" alt /></div>
 </template>
 
 <script>
@@ -11,7 +11,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-p {
-  font-size: 20px;
+.hero-bg {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
 }
 </style>

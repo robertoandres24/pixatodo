@@ -1,6 +1,7 @@
 <template>
   <div class="main-screen">
-    <transition name="fade"> <img ref="heroBg" :src="selectedImage" v-show="heroLoaded" class="hero-bg" /> </transition>
+    <img ref="heroBg" src="/static/images/dog-bg.jpg" alt class="hero-bg blur" />
+    <!-- <img ref="heroBg" class="hero-bg" /> -->
     <div @click="changeSelectedImage()" class="change-bg-icon"></div>
   </div>
 </template>
@@ -10,37 +11,50 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      heroLoaded: false,
       images: [],
-      selectedImage: ''
+      selectedImage: {}
     }
   },
   async mounted() {
+    // get 200 images
     this.images = await this.getApiImages()
+    // get 1 image random
     await this.getRandomBg()
-    this.handlePreloader()
+
+    this.handlePreloaderBoot()
   },
   methods: {
-    handlePreloader() {
+    handlePreloaderBoot() {
       let heroBg = this.$refs.heroBg
-      heroBg.onload = () => {
-        this.heroLoaded = true
-        console.log('hero loaded')
+      let largeImg = new Image()
+      largeImg.onload = function() {
+        heroBg.src = this.src
+        heroBg.classList.remove('blur')
       }
+      setTimeout(() => {
+        largeImg.src = 'https://pixabay.com/get/ea3db70a2df1063ed1584d05fb1d4797e377e0d311b70c4090f4c570afe5b4bbda_1280.jpg'
+      }, 50)
     },
     randomNumber() {
       return Math.floor(Math.random() * 200) + 1
     },
     getRandomBg() {
       return new Promise((resolve, reject) => {
-        this.selectedImage = this.images[this.randomNumber()].largeImageURL
+        this.selectedImage = this.images[this.randomNumber()]
         resolve(this.selectedImage)
       })
     },
     async changeSelectedImage() {
-      this.heroLoaded = false
       await this.getRandomBg()
-      this.handlePreloader()
+      let heroBg = this.$refs.heroBg
+      heroBg.classList.add('blur')
+      heroBg.src = this.selectedImage.webformatURL
+      let largeImg = new Image()
+      largeImg.onload = function() {
+        heroBg.src = this.src
+        heroBg.classList.remove('blur')
+      }
+      largeImg.src = this.selectedImage.largeImageURL
     },
     getApiImages() {
       return new Promise((resolve, reject) => {
@@ -96,6 +110,11 @@ export default {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  filter: blur(0);
+  transition: all 1s ease;
+  &.blur {
+    filter: blur(10px);
+  }
 }
 .change-bg-icon {
   background: url('/static/images/change-bg-icon.svg');

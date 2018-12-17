@@ -1,8 +1,8 @@
 <template>
   <div class="main-screen">
-    <img ref="heroBg" src="/static/images/dog-bg.jpg" alt class="hero-bg blur" />
+    <img ref="heroBg" src="/static/images/dog-bg.jpg" alt class="hero-bg blur">
     <!-- <img ref="heroBg" class="hero-bg" /> -->
-    <div @click="changeSelectedImage()" class="change-bg-icon"></div>
+    <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
   </div>
 </template>
 
@@ -45,6 +45,8 @@ export default {
       })
     },
     async changeSelectedImage() {
+      let changeBgIcon = this.$refs.changeBgIcon
+      changeBgIcon.classList.add('loading')
       await this.getRandomBg()
       let heroBg = this.$refs.heroBg
       heroBg.classList.add('blur')
@@ -53,6 +55,7 @@ export default {
       largeImg.onload = function() {
         heroBg.src = this.src
         heroBg.classList.remove('blur')
+        changeBgIcon.classList.remove('loading')
       }
       largeImg.src = this.selectedImage.largeImageURL
     },
@@ -125,8 +128,22 @@ export default {
   height: 100px;
   width: 100px;
   margin: 1rem;
+  transition: all 1s ease;
   &:hover {
     cursor: pointer;
+  }
+  &.loading {
+    animation: rotate 3s infinite;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
   }
 }
 </style>

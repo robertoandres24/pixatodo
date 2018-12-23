@@ -1,6 +1,6 @@
 <template>
   <div class="main-screen">
-    <img ref="heroBg" src="/static/images/dog-bg.jpg" alt class="hero-bg blur">
+    <img ref="heroBg" src="/static/images/dog-low.jpg" alt class="hero-bg blur" />
     <!-- <img ref="heroBg" class="hero-bg" /> -->
     <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
   </div>
@@ -32,7 +32,7 @@ export default {
         heroBg.classList.remove('blur')
       }
       setTimeout(() => {
-        largeImg.src = 'https://pixabay.com/get/ea3db70a2df1063ed1584d05fb1d4797e377e0d311b70c4090f4c570afe5b4bbda_1280.jpg'
+        largeImg.src = '/static/images/dog-high.jpg'
       }, 50)
     },
     randomNumber() {

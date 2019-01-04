@@ -1,7 +1,10 @@
 <template>
   <div class="main-screen">
-    <img ref="heroBg" src="/static/images/dog-low.jpg" alt class="hero-bg blur" />
-    <!-- <img ref="heroBg" class="hero-bg" /> -->
+    <img ref="heroBg" src="/static/images/dog-low.jpg" alt class="hero-bg blur">
+    <div class="overlay"></div>
+    <div class="create-todo">
+      <input type="text" placeholder="Crea tu tarea">
+    </div>
     <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
   </div>
 </template>
@@ -81,12 +84,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.create-todo {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  input {
+    font-size: 3rem;
+    font-weight: normal;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid white;
+    color: #fff;
+    padding-bottom: 0.2rem;
+    &::placeholder {
+      font-weight: 100;
+      color: #fff;
+      text-indent: 0.5rem;
+    }
+  }
 }
 .main-screen {
   position: absolute;
@@ -105,6 +123,7 @@ export default {
 }
 .hero-bg {
   position: absolute;
+  z-index: 1;
   top: 0;
   bottom: 0;
   left: 0;
@@ -118,6 +137,18 @@ export default {
   &.blur {
     filter: blur(10px);
   }
+}
+.overlay {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
 }
 .change-bg-icon {
   background: url('/static/images/change-bg-icon.svg');
@@ -145,5 +176,12 @@ export default {
   to {
     transform: rotateY(360deg);
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

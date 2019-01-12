@@ -1,7 +1,5 @@
 <template>
-  <div class="wrapper">
-    <router-view></router-view>
-  </div>
+  <div class="wrapper"><router-view></router-view></div>
 </template>
 
 <script>
@@ -21,5 +19,6 @@ body {
   width: 100%;
   height: 100vh;
   background: black;
+  color: #fff;
 }
 </style>

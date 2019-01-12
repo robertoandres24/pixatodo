@@ -10,7 +10,7 @@ module.exports = {
     browser: true,
     webextensions: true
   },
-  extends: ['plugin:vue/essential', 'plugin:prettier/recommended', '@vue/prettier'],
+  extends: ['plugin:vue/essential',  '@vue/prettier'],
   // required to lint *.vue files
   // plugins: ['vue'],
   // add your custom rules here

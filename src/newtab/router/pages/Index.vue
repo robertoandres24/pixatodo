@@ -1,11 +1,30 @@
 <template>
   <div class="main-screen">
-    <img ref="heroBg" src="/static/images/dog-low.jpg" alt class="hero-bg blur">
+    <img
+      ref="heroBg"
+      src="/static/images/dog-low.jpg"
+      alt
+      class="hero-bg blur"
+    />
     <div class="overlay"></div>
     <div class="create-todo">
-      <input type="text" placeholder="Crea tu tarea">
+      <input
+        type="text"
+        placeholder="Crea tu tarea"
+        v-model="newTodo"
+        @keyup.enter="addTodo"
+      />
     </div>
-    <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
+    <div v-show="todos.length" class="todo-list">
+      <div class="todo" v-for="(todo, index) in todos" :key="index">
+        {{ todo.title }}
+      </div>
+    </div>
+    <div
+      ref="changeBgIcon"
+      @click="changeSelectedImage()"
+      class="change-bg-icon"
+    ></div>
   </div>
 </template>
 
@@ -15,7 +34,9 @@ export default {
   data() {
     return {
       images: [],
-      selectedImage: {}
+      selectedImage: {},
+      newTodo: '',
+      todos: []
     }
   },
   async mounted() {
@@ -27,6 +48,17 @@ export default {
     this.handlePreloaderBoot()
   },
   methods: {
+    addTodo() {
+      let value = this.newTodo && this.newTodo.trim()
+      if (!value) {
+        return
+      }
+      this.todos.push({
+        title: value,
+        completed: false
+      })
+      this.newTodo = ''
+    },
     handlePreloaderBoot() {
       let heroBg = this.$refs.heroBg
       let largeImg = new Image()
@@ -83,14 +115,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Lato');
 .create-todo {
   position: absolute;
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9;
+  width: 600px;
   input {
+    width: 100%;
     font-size: 3rem;
     font-weight: normal;
     background: transparent;
@@ -104,6 +139,24 @@ export default {
       color: #fff;
       text-indent: 0.5rem;
     }
+  }
+}
+.todo-list {
+  font-family: helvetica;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  width: 600px;
+  font-size: 1.6rem;
+  .todo {
+    width: 100%;
+    margin: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    font-weight: lighter;
   }
 }
 .main-screen {

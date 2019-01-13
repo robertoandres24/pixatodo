@@ -10,13 +10,18 @@
     <div class="create-todo">
       <input
         type="text"
-        placeholder="Crea tu tarea"
+        :placeholder="pendingTasks"
         v-model="newTodo"
         @keyup.enter="addTodo"
       />
     </div>
     <div v-show="todos.length" class="todo-list">
-      <div class="todo" v-for="(todo, index) in todos" :key="index">
+      <div
+        @click="removeTodo(todo)"
+        class="todo"
+        v-for="(todo, index) in todos"
+        :key="index"
+      >
         {{ todo.title }}
       </div>
     </div>
@@ -30,13 +35,46 @@
 
 <script>
 import axios from 'axios'
+// localStorage persistence
+var STORAGE_KEY = 'pixatodo-todos'
+var todoStorage = {
+  fetch: function() {
+    var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    todos.forEach(function(todo, index) {
+      todo.id = index
+    })
+    todoStorage.uid = todos.length
+    return todos
+  },
+  save: function(todos) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  }
+}
+
 export default {
   data() {
     return {
       images: [],
       selectedImage: {},
       newTodo: '',
-      todos: []
+      todos: todoStorage.fetch()
+    }
+  },
+  computed: {
+    pendingTasks() {
+      if (this.todos.length) {
+        return 'Mis tareas pendientes'
+      }
+      return 'Crea tu tarea'
+    }
+  },
+  // watch todos change for localStorage persistence
+  watch: {
+    todos: {
+      handler: function(todos) {
+        todoStorage.save(todos)
+      },
+      deep: true
     }
   },
   async mounted() {
@@ -54,10 +92,14 @@ export default {
         return
       }
       this.todos.push({
+        id: todoStorage.uid++,
         title: value,
         completed: false
       })
       this.newTodo = ''
+    },
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1)
     },
     handlePreloaderBoot() {
       let heroBg = this.$refs.heroBg
@@ -157,6 +199,10 @@ export default {
     padding: 0.8rem 0;
     overflow: hidden;
     font-weight: lighter;
+    cursor: pointer;
+    &:hover {
+      text-decoration: line-through;
+    }
   }
 }
 .main-screen {

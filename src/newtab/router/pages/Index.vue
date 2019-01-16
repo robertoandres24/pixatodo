@@ -2,7 +2,7 @@
   <div class="main-screen">
     <img
       ref="heroBg"
-      src="/static/images/best-friend-low.jpg"
+      :src="bgImage ? bgImage.low : defaultBg"
       alt
       class="hero-bg blur"
     />
@@ -37,6 +37,7 @@
 import axios from 'axios'
 // localStorage persistence
 var STORAGE_KEY = 'pixatodo-todos'
+var BGIMAGE_KEY = 'bgImage'
 var todoStorage = {
   fetch: function() {
     var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
@@ -50,6 +51,15 @@ var todoStorage = {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   }
 }
+var currentBg = {
+  fetch: function() {
+    var image = JSON.parse(localStorage.getItem(BGIMAGE_KEY))
+    return image
+  },
+  save: function(imgSource) {
+    localStorage.setItem(BGIMAGE_KEY, JSON.stringify(imgSource))
+  }
+}
 
 export default {
   data() {
@@ -57,7 +67,9 @@ export default {
       images: [],
       selectedImage: {},
       newTodo: '',
-      todos: todoStorage.fetch()
+      todos: todoStorage.fetch(),
+      bgImage: currentBg.fetch(),
+      defaultBg: '/static/images/best-friend-low.jpg'
     }
   },
   computed: {
@@ -82,7 +94,6 @@ export default {
     this.images = await this.getApiImages()
     // get 1 image random
     await this.getRandomBg()
-
     this.handlePreloaderBoot()
   },
   methods: {
@@ -108,8 +119,11 @@ export default {
         heroBg.src = this.src
         heroBg.classList.remove('blur')
       }
+      let currentBg = this.bgImage
+        ? this.bgImage.high
+        : '/static/images/best-friend-high.jpg'
       setTimeout(() => {
-        largeImg.src = '/static/images/best-friend-high.jpg'
+        largeImg.src = currentBg
       }, 50)
     },
     randomNumber() {
@@ -135,6 +149,12 @@ export default {
         changeBgIcon.classList.remove('loading')
       }
       largeImg.src = this.selectedImage.largeImageURL
+      //add new default bgImage to local Storage
+      let newBgDefault = {
+        low: this.selectedImage.webformatURL,
+        high: this.selectedImage.largeImageURL
+      }
+      currentBg.save(newBgDefault)
     },
     getApiImages() {
       return new Promise((resolve, reject) => {

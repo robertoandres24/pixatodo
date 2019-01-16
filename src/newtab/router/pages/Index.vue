@@ -2,7 +2,7 @@
   <div class="main-screen">
     <img
       ref="heroBg"
-      src="/static/images/dog-low.jpg"
+      src="/static/images/best-friend-low.jpg"
       alt
       class="hero-bg blur"
     />
@@ -109,7 +109,7 @@ export default {
         heroBg.classList.remove('blur')
       }
       setTimeout(() => {
-        largeImg.src = '/static/images/dog-high.jpg'
+        largeImg.src = '/static/images/best-friend-high.jpg'
       }, 50)
     },
     randomNumber() {

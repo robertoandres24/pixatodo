@@ -270,7 +270,10 @@ export default {
   opacity: 0.5;
 }
 .change-bg-icon {
-  background: url('/static/images/change-bg-icon.svg');
+  background-image: url('/static/images/refresh-bg-image.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   position: absolute;
   z-index: 2;
   right: 0;

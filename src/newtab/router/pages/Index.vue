@@ -64,6 +64,7 @@ var currentBg = {
 export default {
   data() {
     return {
+      code: 'es',
       images: [],
       selectedImage: {},
       newTodo: '',
@@ -90,6 +91,12 @@ export default {
     }
   },
   async mounted() {
+    // ip and language stuff
+    let myPublicIp = await this.getMyPublicIp()
+    let ipInfo = await this.getIpInfo(myPublicIp)
+    this.code = await this.getCode(ipInfo)
+
+    console.log(this.code)
     // get 200 images
     this.images = await this.getApiImages()
     // get 1 image random
@@ -171,6 +178,44 @@ export default {
           .catch(error => {
             reject(error)
           })
+      })
+    },
+    getMyPublicIp() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('https://api.ipify.org?format=json')
+          .then(response => {
+            resolve(response.data.ip)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getIpInfo(myPublicIp) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('http://api.ipstack.com/' + myPublicIp, {
+            params: {
+              access_key: 'c3d7cc7fe3f67423c53bf0f706d143e9',
+              format: 1
+            }
+          })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getCode(response) {
+      return new Promise((resolve, reject) => {
+        let code = response.data.location.languages[0].code
+        if (code !== undefined) {
+          resolve(code)
+        }
+        reject('unable to get country code')
       })
     }
   }

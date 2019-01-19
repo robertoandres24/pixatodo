@@ -25,6 +25,21 @@
         {{ todo.title }}
       </div>
     </div>
+    <div class="credits">
+      <p>
+        <label for="">Imágenes desde:</label
+        ><a href="https://pixabay.com/">Pixabay</a>
+      </p>
+      <p class="dash">-</p>
+      <p class="inspired-by">
+        <label for=""> Inspirado por:</label>
+        <a
+          href="https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es"
+          >Wunderlist</a
+        ><a href="https://momentumdash.com/">Momentum</a
+        ><a href="https://www.infinitynewtab.com/">Infinity</a>
+      </p>
+    </div>
     <div
       ref="changeBgIcon"
       @click="changeSelectedImage()"
@@ -224,6 +239,28 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lato');
+.credits {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  margin: 1rem;
+  font-size: 0.8rem;
+  display: flex;
+  color: #ddd;
+  label {
+    margin-right: 0.5rem;
+  }
+  a {
+    color: #ddd;
+  }
+  .dash {
+    margin: 0 1rem;
+  }
+  .inspired-by a {
+    margin-right: 0.5rem;
+  }
+}
 .create-todo {
   position: absolute;
   top: 20%;
@@ -315,7 +352,7 @@ export default {
   opacity: 0.5;
 }
 .change-bg-icon {
-  background-image: url('/static/images/refresh-bg-image.svg');
+  background-image: url('/static/images/refresh.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -323,25 +360,25 @@ export default {
   z-index: 2;
   right: 0;
   bottom: 0;
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
   margin: 1rem;
   transition: all 1s ease;
   &:hover {
     cursor: pointer;
   }
   &.loading {
-    animation: rotate 3s infinite;
+    animation: rotate 3s linear infinite;
   }
 }
 
 @keyframes rotate {
   from {
-    transform: rotateY(0deg);
+    transform: rotate(0deg);
   }
 
   to {
-    transform: rotateY(360deg);
+    transform: rotate(360deg);
   }
 }
 .fade-enter-active,

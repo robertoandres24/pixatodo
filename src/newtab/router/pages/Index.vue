@@ -50,6 +50,7 @@
 
 <script>
 import axios from 'axios'
+
 // localStorage persistence
 var STORAGE_KEY = 'pixatodo-todos'
 var BGIMAGE_KEY = 'bgImage'
@@ -181,7 +182,7 @@ export default {
         axios
           .get('https://pixabay.com/api/', {
             params: {
-              key: '11002686-685122bed59c07caf3ac56d3f',
+              key: process.env.PIXABAY_KEY,
               per_page: 200
             }
           })
@@ -210,7 +211,7 @@ export default {
         axios
           .get('http://api.ipstack.com/' + myPublicIp, {
             params: {
-              access_key: 'c3d7cc7fe3f67423c53bf0f706d143e9',
+              access_key: process.env.IPSTACK_KEY,
               format: 1
             }
           })

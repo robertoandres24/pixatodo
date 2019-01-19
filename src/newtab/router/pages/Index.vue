@@ -107,11 +107,9 @@ export default {
   },
   async mounted() {
     // ip and language stuff
-    let myPublicIp = await this.getMyPublicIp()
-    let ipInfo = await this.getIpInfo(myPublicIp)
-    this.code = await this.getCode(ipInfo)
-
-    console.log(this.code)
+    // let myPublicIp = await this.getMyPublicIp()
+    // let ipInfo = await this.getIpInfo(myPublicIp)
+    // this.code = await this.getCode(ipInfo)
     // get 200 images
     this.images = await this.getApiImages()
     // get 1 image random

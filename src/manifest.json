@@ -1,7 +1,7 @@
 {
   "name": "pixatodo",
-  "description": "A Vue.js web extension",
-  "version": null,
+  "description": "Una simple lista de tareas por hacer, mas bellos fondos de pantalla que puedes cambiar con un click",
+  "version": 1.1,
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",

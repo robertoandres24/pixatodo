@@ -1,7 +1,7 @@
 {
-  "name": "pixatodo",
-  "description": "Una simple lista de tareas por hacer, mas bellos fondos de pantalla que puedes cambiar con un click",
-  "version": 1.1,
+  "name": "Pixatodo",
+  "description": "Replace your New Tab page with a simple to-do list, plus beautiful wallpapers that you can change with a click.                                 Reemplaza tu página de Nueva pestaña con una simple lista de tareas por hacer, mas bellos fondos de pantalla que puedes cambiar con un click",
+  "version": 1,
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",

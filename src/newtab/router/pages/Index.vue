@@ -80,21 +80,31 @@ var currentBg = {
 export default {
   data() {
     return {
-      code: 'es',
+      code: 'en',
       images: [],
       selectedImage: {},
       newTodo: '',
       todos: todoStorage.fetch(),
       bgImage: currentBg.fetch(),
-      defaultBg: '/static/images/best-friend-low.jpg'
+      defaultBg: '/static/images/best-friend-low.jpg',
+      messages: {
+        en: {
+          pendingTasks: 'My pending tasks',
+          noPendingTasks: 'Create your task'
+        },
+        es: {
+          pendingTasks: 'Mis tareas pendientes',
+          noPendingTasks: 'Crea tu tarea'
+        }
+      }
     }
   },
   computed: {
     pendingTasks() {
       if (this.todos.length) {
-        return 'Mis tareas pendientes'
+        return this.messages[this.code].pendingTasks
       }
-      return 'Crea tu tarea'
+      return this.messages[this.code].noPendingTasks
     }
   },
   // watch todos change for localStorage persistence
@@ -107,15 +117,17 @@ export default {
     }
   },
   async mounted() {
-    // ip and language stuff
-    // let myPublicIp = await this.getMyPublicIp()
-    // let ipInfo = await this.getIpInfo(myPublicIp)
-    // this.code = await this.getCode(ipInfo)
     // get 200 images
     this.images = await this.getApiImages()
     // get 1 image random
     await this.getRandomBg()
-    this.handlePreloaderBoot()
+    await this.handlePreloaderBoot()
+
+    // ip and language stuff
+    let myPublicIp = await this.getMyPublicIp()
+    let ipInfo = await this.getIpInfo(myPublicIp)
+    this.code = await this.getCode(ipInfo)
+    console.log(this.code)
   },
   methods: {
     addTodo() {

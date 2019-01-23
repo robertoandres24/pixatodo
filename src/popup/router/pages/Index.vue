@@ -1,5 +1,10 @@
 <template>
-  <div class="box"><a href="#">Pixatodo Chrome Web Extension</a></div>
+  <div class="box">
+    <a
+      href="https://chrome.google.com/webstore/detail/pixatodo/bdgdpelmmdancnfaakbekmapffolbnij"
+      >Pixatodo Chrome Web Extension</a
+    >
+  </div>
 </template>
 
 <script>

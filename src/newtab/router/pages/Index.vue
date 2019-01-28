@@ -27,12 +27,12 @@
     </div>
     <div class="credits">
       <p>
-        <label for="">Imágenes desde:</label
+        <label for="">Images from:</label
         ><a href="https://pixabay.com/">Pixabay</a>
       </p>
       <p class="dash">-</p>
       <p class="inspired-by">
-        <label for=""> Inspirado por:</label>
+        <label for=""> Inspired by:</label>
         <a
           href="https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es"
           >Wunderlist</a
@@ -106,9 +106,10 @@ export default {
   computed: {
     pendingTasks() {
       if (this.todos.length) {
-        return this.messages[this.code].pendingTasks
+        // return this.messages[this.code].pendingTasks
+        return 'My pending Tasks'
       }
-      return this.messages[this.code].noPendingTasks
+      return 'Create your task' // return this.messages[this.code].noPendingTasks
     }
   },
   // watch todos change for localStorage persistence
@@ -128,10 +129,10 @@ export default {
     await this.handlePreloaderBoot()
 
     // ip and language stuff
-    let myPublicIp = await this.getMyPublicIp()
-    let ipInfo = await this.getIpInfo(myPublicIp)
-    this.code = await this.getCode(ipInfo)
-    console.log(this.code)
+    // let myPublicIp = await this.getMyPublicIp()
+    // let ipInfo = await this.getIpInfo(myPublicIp)
+    // this.code = await this.getCode(ipInfo)
+    // console.log(this.code)
   },
   methods: {
     addTodo() {

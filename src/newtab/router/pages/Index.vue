@@ -2,7 +2,7 @@
   <div class="main-screen">
     <img
       ref="heroBg"
-      :src="bgImage ? bgImage.low : defaultBg"
+      :src="bgImage ? bgImage.low : defaultBgLow"
       alt
       class="hero-bg blur"
     />
@@ -74,6 +74,9 @@ var currentBg = {
   },
   save: function(imgSource) {
     localStorage.setItem(BGIMAGE_KEY, JSON.stringify(imgSource))
+  },
+  destroy: function() {
+    localStorage.removeItem(BGIMAGE_KEY)
   }
 }
 
@@ -86,7 +89,8 @@ export default {
       newTodo: '',
       todos: todoStorage.fetch(),
       bgImage: currentBg.fetch(),
-      defaultBg: '/static/images/best-friend-low.jpg',
+      defaultBgLow: '/static/images/best-friend-low.jpg',
+      defaultBgHigh: '/static/images/best-friend-high.jpg',
       messages: {
         en: {
           pendingTasks: 'My pending tasks',
@@ -148,16 +152,19 @@ export default {
     handlePreloaderBoot() {
       let heroBg = this.$refs.heroBg
       let largeImg = new Image()
+      let newBg = this.bgImage ? this.bgImage.high : this.defaultBgHigh
+      setTimeout(() => {
+        largeImg.src = newBg
+      }, 50)
       largeImg.onload = function() {
         heroBg.src = this.src
         heroBg.classList.remove('blur')
       }
-      let currentBg = this.bgImage
-        ? this.bgImage.high
-        : '/static/images/best-friend-high.jpg'
-      setTimeout(() => {
-        largeImg.src = currentBg
-      }, 50)
+      largeImg.onerror = () => {
+        currentBg.destroy()
+        heroBg.src = this.defaultBgHigh
+        heroBg.classList.remove('blur')
+      }
     },
     randomNumber() {
       return Math.floor(Math.random() * 200) + 1

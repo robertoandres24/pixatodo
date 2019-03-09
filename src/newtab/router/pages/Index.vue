@@ -7,22 +7,24 @@
       class="hero-bg blur"
     />
     <div class="overlay"></div>
-    <div class="create-todo">
-      <input
-        type="text"
-        :placeholder="pendingTasks"
-        v-model="newTodo"
-        @keyup.enter="addTodo"
-      />
-    </div>
-    <div v-show="todos.length" class="todo-list">
-      <div
-        @click="removeTodo(todo)"
-        class="todo"
-        v-for="(todo, index) in todos"
-        :key="index"
-      >
-        {{ todo.title }}
+    <div class="content">
+      <div class="create-todo">
+        <input
+          type="text"
+          :placeholder="pendingTasks"
+          v-model="newTodo"
+          @keyup.enter="addTodo"
+        />
+      </div>
+      <div v-show="todos.length" class="todo-list">
+        <div
+          @click="removeTodo(todo)"
+          class="todo"
+          v-for="(todo, index) in todos"
+          :key="index"
+        >
+          {{ todo.title }}
+        </div>
       </div>
     </div>
     <div class="credits">
@@ -225,13 +227,15 @@ export default {
     margin-right: 0.5rem;
   }
 }
-.create-todo {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9;
+.content {
+  position: relative;
   width: 600px;
+  margin: 0 auto;
+  padding: 100px 0;
+  z-index: 3;
+}
+
+.create-todo {
   input {
     width: 100%;
     font-size: 3rem;
@@ -251,13 +255,8 @@ export default {
 }
 .todo-list {
   font-family: helvetica;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9;
-  width: 600px;
   font-size: 1.6rem;
+  margin-top: 2.5rem;
   .todo {
     width: 100%;
     margin: 0.8rem 0;
@@ -272,9 +271,9 @@ export default {
   }
 }
 .main-screen {
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   &::before {
     content: '';
     position: absolute;
@@ -287,7 +286,7 @@ export default {
   }
 }
 .hero-bg {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   top: 0;
   bottom: 0;
@@ -320,7 +319,7 @@ export default {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   right: 0;
   bottom: 0;

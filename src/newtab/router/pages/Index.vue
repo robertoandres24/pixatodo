@@ -90,26 +90,15 @@ export default {
       todos: todoStorage.fetch(),
       bgImage: currentBg.fetch(),
       defaultBgLow: '/static/images/best-friend-low.jpg',
-      defaultBgHigh: '/static/images/best-friend-high.jpg',
-      messages: {
-        en: {
-          pendingTasks: 'My pending tasks',
-          noPendingTasks: 'Create your task'
-        },
-        es: {
-          pendingTasks: 'Mis tareas pendientes',
-          noPendingTasks: 'Crea tu tarea'
-        }
-      }
+      defaultBgHigh: '/static/images/best-friend-high.jpg'
     }
   },
   computed: {
     pendingTasks() {
       if (this.todos.length) {
-        // return this.messages[this.code].pendingTasks
         return 'My pending Tasks'
       }
-      return 'Create your task' // return this.messages[this.code].noPendingTasks
+      return 'Create your task'
     }
   },
   // watch todos change for localStorage persistence
@@ -127,12 +116,6 @@ export default {
     // get 1 image random
     await this.getRandomBg()
     await this.handlePreloaderBoot()
-
-    // ip and language stuff
-    // let myPublicIp = await this.getMyPublicIp()
-    // let ipInfo = await this.getIpInfo(myPublicIp)
-    // this.code = await this.getCode(ipInfo)
-    // console.log(this.code)
   },
   methods: {
     addTodo() {
@@ -212,44 +195,6 @@ export default {
           .catch(error => {
             reject(error)
           })
-      })
-    },
-    getMyPublicIp() {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('https://api.ipify.org?format=json')
-          .then(response => {
-            resolve(response.data.ip)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    getIpInfo(myPublicIp) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('http://api.ipstack.com/' + myPublicIp, {
-            params: {
-              access_key: process.env.IPSTACK_KEY,
-              format: 1
-            }
-          })
-          .then(response => {
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    getCode(response) {
-      return new Promise((resolve, reject) => {
-        let code = response.data.location.languages[0].code
-        if (code !== undefined) {
-          resolve(code)
-        }
-        reject('unable to get country code')
       })
     }
   }

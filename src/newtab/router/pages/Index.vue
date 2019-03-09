@@ -379,8 +379,8 @@ export default {
   z-index: 2;
   right: 0;
   bottom: 0;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   margin: 1rem;
   transition: all 1s ease;
   &:hover {

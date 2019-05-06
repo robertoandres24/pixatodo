@@ -1,6 +1,10 @@
 # pixatodo
 a vuejs chrome extension
 
+### Development mode
+`npm run watch:dev`
+
+
 ### To Fixed
 
 - [ ] make that saved image not broke, when api url isnt available, (create an Img asset and save in static)

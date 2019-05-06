@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../../../services/api'
 
 // localStorage persistence
 var STORAGE_KEY = 'pixatodo-todos'
@@ -85,7 +85,6 @@ var currentBg = {
 export default {
   data() {
     return {
-      code: 'en',
       images: [],
       selectedImage: {},
       newTodo: '',
@@ -98,7 +97,7 @@ export default {
   computed: {
     pendingTasks() {
       if (this.todos.length) {
-        return 'My pending Tasks'
+        return 'My pending Task'
       }
       return 'Create your task'
     }
@@ -184,10 +183,9 @@ export default {
     },
     getApiImages() {
       return new Promise((resolve, reject) => {
-        axios
-          .get('https://pixabay.com/api/', {
+        api
+          .get('/', {
             params: {
-              key: process.env.PIXABAY_KEY,
               per_page: 200
             }
           })

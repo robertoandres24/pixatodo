@@ -53,43 +53,14 @@
 <script>
 import api from '../../../services/api'
 
-// localStorage persistence
-var STORAGE_KEY = 'pixatodo-todos'
-var BGIMAGE_KEY = 'bgImage'
-var todoStorage = {
-  fetch: function() {
-    var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-    todos.forEach(function(todo, index) {
-      todo.id = index
-    })
-    todoStorage.uid = todos.length
-    return todos
-  },
-  save: function(todos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  }
-}
-var currentBg = {
-  fetch: function() {
-    var image = JSON.parse(localStorage.getItem(BGIMAGE_KEY))
-    return image
-  },
-  save: function(imgSource) {
-    localStorage.setItem(BGIMAGE_KEY, JSON.stringify(imgSource))
-  },
-  destroy: function() {
-    localStorage.removeItem(BGIMAGE_KEY)
-  }
-}
-
 export default {
   data() {
     return {
       images: [],
       selectedImage: {},
       newTodo: '',
-      todos: todoStorage.fetch(),
-      bgImage: currentBg.fetch(),
+      todos: this.$localStorage.todoStorage.fetch(),
+      bgImage: this.$localStorage.currentBg.fetch(),
       defaultBgLow: '/static/images/best-friend-low.jpg',
       defaultBgHigh: '/static/images/best-friend-high.jpg'
     }
@@ -106,7 +77,7 @@ export default {
   watch: {
     todos: {
       handler: function(todos) {
-        todoStorage.save(todos)
+        this.$localStorage.todoStorage.save(todos)
       },
       deep: true
     }
@@ -125,7 +96,7 @@ export default {
         return
       }
       this.todos.push({
-        id: todoStorage.uid++,
+        id: this.$localStorage.todoStorage.uid++,
         title: value,
         completed: false
       })
@@ -146,7 +117,7 @@ export default {
         heroBg.classList.remove('blur')
       }
       largeImg.onerror = () => {
-        currentBg.destroy()
+        this.$localStorage.currentBg.destroy()
         heroBg.src = this.defaultBgHigh
         heroBg.classList.remove('blur')
       }
@@ -179,7 +150,7 @@ export default {
         low: this.selectedImage.webformatURL,
         high: this.selectedImage.largeImageURL
       }
-      currentBg.save(newBgDefault)
+      this.$localStorage.currentBg.save(newBgDefault)
     },
     getApiImages() {
       return new Promise((resolve, reject) => {

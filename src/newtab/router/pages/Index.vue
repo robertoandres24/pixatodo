@@ -18,12 +18,22 @@
       </div>
       <div v-show="todos.length" class="todo-list">
         <div
-          @click="removeTodo(todo)"
-          class="todo"
+          @dblclick="editTodo(todo)"
           v-for="(todo, index) in todos"
           :key="index"
+          class="todo"
+          :class="{ editing: todo == editedTodo }"
         >
-          {{ todo.title }}
+          <label for="">{{ todo.title }}</label>
+          <input
+            v-model="todo.title"
+            v-todo-focus="todo == editedTodo"
+            @blur="doneEdit(todo)"
+            @keyup.enter="doneEdit(todo)"
+            @keyup.esc="cancelEdit(todo)"
+            type="text"
+            class="edit"
+          />
         </div>
       </div>
     </div>
@@ -59,6 +69,7 @@ export default {
       images: [],
       selectedImage: {},
       newTodo: '',
+      editedTodo: '',
       todos: this.$localStorage.todoStorage.fetch(),
       bgImage: this.$localStorage.currentBg.fetch(),
       defaultBgLow: '/static/images/best-friend-low.jpg',
@@ -71,6 +82,16 @@ export default {
         return 'My pending Task'
       }
       return 'Create your task'
+    }
+  },
+  // a custom directive to wait for the DOM to be updated
+  // before focusing on the input field.
+  // http://vuejs.org/guide/custom-directive.html
+  directives: {
+    'todo-focus': function(el, binding) {
+      if (binding.value) {
+        el.focus()
+      }
     }
   },
   // watch todos change for localStorage persistence
@@ -102,6 +123,25 @@ export default {
       })
       this.newTodo = ''
     },
+    editTodo: function(todo) {
+      this.beforeEditCache = todo.title
+      this.editedTodo = todo
+    },
+
+    doneEdit: function(todo) {
+      if (!this.editedTodo) {
+        return
+      }
+      this.editedTodo = null
+      todo.title = todo.title.trim()
+      if (!todo.title) {
+        this.removeTodo(todo)
+      }
+    },
+    cancelEdit: function(todo) {
+      this.editedTodo = null
+      todo.title = this.beforeEditCache
+    },
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1)
     },
@@ -126,7 +166,7 @@ export default {
       return Math.floor(Math.random() * 200) + 1
     },
     getRandomBg() {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         this.selectedImage = this.images[this.randomNumber()]
         resolve(this.selectedImage)
       })
@@ -226,18 +266,42 @@ export default {
   font-family: helvetica;
   font-size: 1.6rem;
   margin-top: 2.5rem;
-  .todo {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  .todo label {
     width: 100%;
+    display: block;
+    padding: 0.5rem;
     margin: 0.8rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 0.8rem 0;
     overflow: hidden;
-    font-weight: lighter;
+    line-height: 1.4em;
     cursor: pointer;
-    &:hover {
-      text-decoration: line-through;
+  }
+  .todo input.edit {
+    margin: 0;
+    width: 100%;
+    background: transparent;
+    color: white;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.4em;
+    border: 0;
+    padding: 0.5rem;
+    margin: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    display: none;
+    &:focus {
+      outline: none;
     }
   }
+}
+
+.todo-list .todo.editing label {
+  display: none;
+}
+.todo-list .todo.editing .edit {
+  display: block;
 }
 .main-screen {
   position: relative;

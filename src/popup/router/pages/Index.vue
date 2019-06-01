@@ -1,6 +1,7 @@
 <template>
   <div class="box">
     <a
+      target="_blank"
       href="https://chrome.google.com/webstore/detail/pixatodo/bdgdpelmmdancnfaakbekmapffolbnij"
       >Pixatodo Chrome Web Extension</a
     >

@@ -39,19 +39,9 @@
       </div>
     </div>
     <div class="credits">
-      <p>
-        <label for="">Images from:</label
-        ><a href="https://pixabay.com/">Pixabay</a>
-      </p>
-      <p class="dash">-</p>
-      <p class="inspired-by">
-        <label for=""> Inspired by:</label>
-        <a
-          href="https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es"
-          >Wunderlist</a
-        ><a href="https://momentumdash.com/">Momentum</a
-        ><a href="https://www.infinitynewtab.com/">Infinity</a>
-      </p>
+      <a href="https://github.com/robertoandres24/pixatodo"
+        ><span class="icon github-icon"></span>
+      </a>
     </div>
     <div
       ref="changeBgIcon"
@@ -299,13 +289,13 @@ export default {
   .todo .destroy {
     display: none;
     position: absolute;
-    top: 0;
-    right: -1.5rem;
+    top: -0.5rem;
+    right: -0.5rem;
     bottom: 0;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin: auto 0;
-    font-size: 30px;
+    font-size: 40px;
     color: white;
 
     background: transparent;
@@ -403,6 +393,20 @@ export default {
   &.loading {
     animation: rotate 3s linear infinite;
   }
+}
+.github-icon {
+  background-image: url(/static/images/github-white.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  z-index: 2;
+  height: 1.5rem;
+  width: 1.5rem;
+  bottom: 0;
+  left: 0;
+  margin: 1rem;
+  transition: all 1s ease;
 }
 
 @keyframes rotate {

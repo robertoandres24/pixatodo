@@ -24,6 +24,7 @@
           class="todo"
           :class="{ editing: todo == editedTodo }"
         >
+          <button @click="removeTodo(todo)" class="destroy"></button>
           <label for="">{{ todo.title }}</label>
           <input
             v-model="todo.title"
@@ -79,7 +80,7 @@ export default {
   computed: {
     pendingTasks() {
       if (this.todos.length) {
-        return 'My pending Task'
+        return 'My pending Tasks'
       }
       return 'Create your task'
     }
@@ -256,8 +257,10 @@ export default {
     color: #fff;
     padding-bottom: 0.2rem;
     &::placeholder {
+      font-style: italic;
+      font-size: 2.6rem;
       font-weight: 100;
-      color: #fff;
+      color: #fff6;
       text-indent: 0.5rem;
     }
   }
@@ -273,14 +276,13 @@ export default {
     display: block;
     padding: 0.5rem;
     margin: 0.8rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     overflow: hidden;
     line-height: 1.4em;
     cursor: pointer;
   }
   .todo input.edit {
     margin: 0;
-    width: 100%;
+    width: 90%;
     background: transparent;
     color: white;
     font-family: inherit;
@@ -289,11 +291,46 @@ export default {
     border: 0;
     padding: 0.5rem;
     margin: 0.8rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     display: none;
     &:focus {
       outline: none;
     }
+  }
+  .todo .destroy {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: -1.5rem;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 30px;
+    color: white;
+
+    background: transparent;
+    transition: color 0.2s ease-out;
+    border: none;
+  }
+  .todo {
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  .todo .destroy {
+    &:hover {
+      color: red;
+      cursor: pointer;
+    }
+    &:after {
+      content: '×';
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .todo:hover .destroy {
+    display: block;
   }
 }
 

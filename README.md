@@ -16,8 +16,8 @@ a vuejs chrome extension
 - [ ] add emoji support (i.e.  :joy)
 - [ ] add posibility to get Images by a certain category (add input,select for that, and set a default )
 - [ ] add posibility to reorder the todos dragging them (there is a plugin js for that)
-- [ ] add edit (with one click)
-- [ ] add line-through hover the text, only when delete button right next to todo is hovered
+- [x] add edit (with one duble click)
+- [x] add line-through hover the text, only when delete button right next to todo is hovered
 - [ ] add show completed
 - [ ] add delete permanently
 

@@ -262,7 +262,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   .todo label {
-    width: 100%;
+    width: 90%;
     display: block;
     padding: 0.5rem;
     margin: 0.8rem 0;
@@ -310,6 +310,9 @@ export default {
     &:hover {
       color: red;
       cursor: pointer;
+      & + label {
+        text-decoration: line-through;
+      }
     }
     &:after {
       content: '×';

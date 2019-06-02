@@ -1,7 +1,7 @@
 {
   "name": "Pixatodo",
   "description": "Replace your New Tab page with a simple to-do list, plus beautiful wallpapers that you can change with a click",
-  "version": 1.2,
+  "version": "1.0.2",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",

@@ -1,20 +1,10 @@
 <template>
   <div class="main-screen">
-    <img
-      ref="heroBg"
-      :src="bgImage ? bgImage.low : defaultBgLow"
-      alt
-      class="hero-bg blur"
-    />
+    <img ref="heroBg" :src="bgImage ? bgImage.low : defaultBgLow" alt class="hero-bg blur">
     <div class="overlay"></div>
     <div class="content">
       <div class="create-todo">
-        <input
-          type="text"
-          :placeholder="pendingTasks"
-          v-model="newTodo"
-          @keyup.enter="addTodo"
-        />
+        <input type="text" :placeholder="pendingTasks" v-model="newTodo" @keyup.enter="addTodo">
       </div>
       <div v-show="todos.length" class="todo-list">
         <div
@@ -25,7 +15,7 @@
           :class="{ editing: todo == editedTodo }"
         >
           <button @click="removeTodo(todo)" class="destroy"></button>
-          <label for="">{{ todo.title }}</label>
+          <label for>{{ todo.title }}</label>
           <input
             v-model="todo.title"
             v-todo-focus="todo == editedTodo"
@@ -34,20 +24,16 @@
             @keyup.esc="cancelEdit(todo)"
             type="text"
             class="edit"
-          />
+          >
         </div>
       </div>
     </div>
     <div class="credits">
-      <a href="https://github.com/robertoandres24/pixatodo"
-        ><span class="icon github-icon"></span>
+      <a href="https://github.com/robertoandres24/pixatodo">
+        <span class="icon github-icon"></span>
       </a>
     </div>
-    <div
-      ref="changeBgIcon"
-      @click="changeSelectedImage()"
-      class="change-bg-icon"
-    ></div>
+    <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
   </div>
 </template>
 
@@ -61,6 +47,28 @@ export default {
       selectedImage: {},
       newTodo: '',
       editedTodo: '',
+      categories: [
+        'fashion',
+        'nature',
+        'backgrounds',
+        'science',
+        'education',
+        'people',
+        'feelings',
+        'religion',
+        'health',
+        'places',
+        'animals',
+        'industry',
+        'food',
+        'computer',
+        'sports',
+        'transportation',
+        'travel',
+        'buildings',
+        'business',
+        'music'
+      ],
       todos: this.$localStorage.todoStorage.fetch(),
       bgImage: this.$localStorage.currentBg.fetch(),
       defaultBgLow: '/static/images/best-friend-low.jpg',
@@ -188,7 +196,8 @@ export default {
         api
           .get('/', {
             params: {
-              per_page: 200
+              per_page: 200,
+              category: 'nature'
             }
           })
           .then(response => {

@@ -1,17 +1,15 @@
 # pixatodo
 a vuejs chrome extension
 
+### Link to my Chrome Web Extension
+https://chrome.google.com/webstore/detail/pixatodo/bdgdpelmmdancnfaakbekmapffolbnij?hl=es-419   
+
 ### Development mode
 `npm run watch:dev`
 ### Build a new version
 change the version in **manifest.json**   
 `npm run build`   
 `npm run build-zip`
-
-### To Fixed
-
-- [x] make that saved image not broke, when api url isnt available, (create an Img asset and save in static)
-- [x] Improve folder structure, create services and make and api instance
 
 ### Next Features
 
@@ -23,4 +21,17 @@ change the version in **manifest.json**
 - [ ] add posibility to reorder the todos dragging them (there is a plugin js for that)
 - [ ] add show completed
 - [ ] add delete permanently
+
+### Credits
+
+#### This is made thanks to this great boilerplate
+https://github.com/Kocal/vue-web-extension
+#### Images from Pixabay
+https://pixabay.com/api/docs/
+#### Inspired by
+Wunderlist New Tab    
+https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es-419
+
+Infinity New Tab    
+https://www.infinitynewtab.com
 

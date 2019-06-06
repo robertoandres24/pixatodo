@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader')
 const { VueLoaderPlugin } = require('vue-loader')
 const { version } = require('./package.json')
+const Dotenv = require('dotenv-webpack');
 
 const config = {
   node: {
@@ -63,6 +64,7 @@ const config = {
     ]
   },
   plugins: [
+    new Dotenv(),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css'
@@ -116,15 +118,6 @@ if (config.mode === 'production') {
     })
   ])
 }
-
-config.plugins = (config.plugins || []).concat([
-  new webpack.DefinePlugin({
-    'process.env': {
-      PIXABAY_KEY: '"11002686-685122bed59c07caf3ac56d3f"',
-      IPSTACK_KEY: '"c3d7cc7fe3f67423c53bf0f706d143e9"'
-    }
-  })
-])
 
 if (process.env.HMR === 'true') {
   config.plugins = (config.plugins || []).concat([

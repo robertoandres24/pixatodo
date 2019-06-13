@@ -24,14 +24,16 @@ change the version in **manifest.json**
 
 ### Credits
 
-#### This is made thanks to this great boilerplate
-https://github.com/Kocal/vue-web-extension
-#### Images from Pixabay
-https://pixabay.com/api/docs/
-#### Inspired by
-Wunderlist New Tab    
-https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es-419
+This is made thanks to this great boilerplate   
+https://github.com/Kocal/vue-web-extension    
+Images from    
+https://pixabay.com/api/docs/   
+Fonts from     
+https://icofont.com/    
 
+### Inspired by
+Wunderlist New Tab    
+https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion?hl=es-419   
 Infinity New Tab    
 https://www.infinitynewtab.com
 

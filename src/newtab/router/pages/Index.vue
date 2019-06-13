@@ -34,6 +34,23 @@
       </a>
     </div>
     <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
+    <div class="icofonts">
+      <div class="icon">
+        <i class="icofont-bear-face"></i>
+      </div>
+      <div class="icon">
+        <i class="icofont-music"></i>
+      </div>
+      <div class="icon">
+        <i class="icofont-hill-sunny"></i>
+      </div>
+      <div class="icon">
+        <i class="icofont-brainstorming"></i>
+      </div>
+      <div class="icon">
+        <i class="icofont-football"></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -197,7 +214,7 @@ export default {
           .get('/', {
             params: {
               per_page: 200,
-              category: 'nature'
+              category: 'computer'
             }
           })
           .then(response => {
@@ -214,6 +231,16 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lato');
+// .icofonts {
+//   position: fixed;
+//   bottom: 0;
+//   right: 0px;
+//   z-index: 9;
+//   .icon i {
+//     font-size: 3em;
+//     color: #fff;
+//   }
+// }
 .credits {
   position: absolute;
   z-index: 2;

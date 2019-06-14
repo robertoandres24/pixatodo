@@ -578,10 +578,10 @@ export default {
     }
     &:hover {
       .icon i {
-        color: #ddd;
+        color: #aaa;
       }
       &:before {
-        color: #ddd;
+        color: #aaa;
       }
     }
   }

@@ -33,7 +33,36 @@
         <span class="icon github-icon"></span>
       </a>
     </div>
-    <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
+    <nav class="menu menu--floating" role="navigation">
+      <a href="#" class="menu--floating__action" data-label="Animals">
+        <span class="icon">
+          <i class="icofont-bear-face"></i>
+        </span>
+      </a>
+      <a href="#" class="menu--floating__action" data-label="Music">
+        <span class="icon">
+          <i class="icofont-music"></i>
+        </span>
+      </a>
+      <a href="#" class="menu--floating__action" data-label="Sports">
+        <span class="icon">
+          <i class="icofont-football"></i>
+        </span>
+      </a>
+      <a href="#" class="menu--floating__action" data-label="Nature">
+        <span class="icon">
+          <i class="icofont-hill-sunny"></i>
+        </span>
+      </a>
+      <a href="#" class="menu--floating__action" data-label="Science">
+        <span class="icon">
+          <i class="icofont-brainstorming"></i>
+        </span>
+      </a>
+
+      <a class="menu--floating__action primary" data-label="Random" href="#"></a>
+    </nav>
+    <!-- <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
     <div class="icofonts">
       <div class="icon">
         <i class="icofont-bear-face"></i>
@@ -50,7 +79,7 @@
       <div class="icon">
         <i class="icofont-football"></i>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -231,16 +260,7 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lato');
-// .icofonts {
-//   position: fixed;
-//   bottom: 0;
-//   right: 0px;
-//   z-index: 9;
-//   .icon i {
-//     font-size: 3em;
-//     color: #fff;
-//   }
-// }
+
 .credits {
   position: absolute;
   z-index: 2;
@@ -413,26 +433,7 @@ export default {
   background: #000;
   opacity: 0.5;
 }
-.change-bg-icon {
-  background-image: url('/static/images/refresh.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: fixed;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  height: 40px;
-  width: 40px;
-  margin: 1rem;
-  transition: all 1s ease;
-  &:hover {
-    cursor: pointer;
-  }
-  &.loading {
-    animation: rotate 3s linear infinite;
-  }
-}
+
 .github-icon {
   background-image: url(/static/images/github-white.svg);
   background-size: contain;
@@ -463,5 +464,138 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.change-bg-icon {
+  background-image: url('/static/images/refresh.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  width: 40px;
+  margin: 1rem;
+  transition: all 1s ease;
+  &:hover {
+    cursor: pointer;
+  }
+  &.loading {
+    animation: rotate 3s linear infinite;
+  }
+}
+
+/* floating action button styles*/
+
+.menu--floating {
+  bottom: 0;
+  position: fixed;
+  margin: 1em;
+  right: 0;
+  z-index: 2;
+}
+
+.menu--floating__action {
+  // icon options
+  .icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    i {
+      font-size: 30px;
+      color: #fff;
+    }
+  }
+  //labels of gray items
+  &:before {
+    bottom: 25%;
+    color: #fff;
+    content: attr(data-label);
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0;
+    padding: 0.25em 1em;
+    position: absolute;
+    right: 100%;
+    text-align: left;
+    transition: opacity 0.2s ease-out 0.5s;
+    white-space: nowrap;
+  }
+  // label of main action btn
+  &:last-child {
+    &:before {
+      font-size: 16px;
+    }
+  }
+  //main circle btn
+  display: block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  margin: 10px auto 0;
+  transition: all 0.2s linear;
+  text-decoration: none;
+
+  &.primary {
+    background-image: url('/static/images/refresh.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+  &.loading {
+    animation: rotate 3s linear infinite;
+  }
+
+  // &:active,
+  // &:focus,
+  // &:hover {
+  //   &:before {
+  //     color: #ddd;
+  //   }
+  // }
+  //every gray circle option
+  &:not(:last-child) {
+    height: 44px;
+    line-height: 2.5;
+    opacity: 0;
+    transform: translateY(50px);
+    width: 44px;
+
+    @for $i from 1 through 6 {
+      &:nth-last-child(#{$i}) {
+        transition-delay: $i * 50ms;
+      }
+    }
+    &:hover {
+      .icon i {
+        color: #ddd;
+      }
+      &:before {
+        color: #ddd;
+      }
+    }
+  }
+}
+//when hover main section, give opacity to gray circles and their labels
+.menu--floating:hover,
+.menu--floating--open {
+  .menu--floating__action {
+    opacity: 1;
+    transform: none;
+
+    &:before {
+      opacity: 1;
+    }
+  }
 }
 </style>

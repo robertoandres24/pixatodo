@@ -60,7 +60,13 @@
         </span>
       </a>
 
-      <a class="menu--floating__action primary" data-label="Random" href="#"></a>
+      <a
+        ref="changeBgIcon"
+        @click="changeSelectedImage()"
+        class="menu--floating__action primary"
+        data-label="Random"
+        href="#"
+      ></a>
     </nav>
     <!-- <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
     <div class="icofonts">
@@ -242,8 +248,7 @@ export default {
         api
           .get('/', {
             params: {
-              per_page: 200,
-              category: 'computer'
+              per_page: 200
             }
           })
           .then(response => {
@@ -466,27 +471,6 @@ export default {
   opacity: 0;
 }
 
-.change-bg-icon {
-  background-image: url('/static/images/refresh.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: fixed;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  height: 40px;
-  width: 40px;
-  margin: 1rem;
-  transition: all 1s ease;
-  &:hover {
-    cursor: pointer;
-  }
-  &.loading {
-    animation: rotate 3s linear infinite;
-  }
-}
-
 /* floating action button styles*/
 
 .menu--floating {
@@ -547,15 +531,17 @@ export default {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    &.loading {
+      &:before {
+        display: none;
+      }
+      animation: rotate 3s linear infinite;
+    }
   }
 
   &:hover {
     cursor: pointer;
   }
-  &.loading {
-    animation: rotate 3s linear infinite;
-  }
-
   // &:active,
   // &:focus,
   // &:hover {

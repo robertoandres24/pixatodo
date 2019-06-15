@@ -90,8 +90,6 @@
 </template>
 
 <script>
-import api from '../../../services/api'
-
 export default {
   data() {
     return {
@@ -156,7 +154,7 @@ export default {
   },
   async mounted() {
     // get 200 images
-    this.images = await this.getApiImages()
+    this.images = await this.$store.dispatch('getApiImages', '')
     // get 1 image random
     await this.getRandomBg()
     await this.handlePreloaderBoot()
@@ -242,22 +240,6 @@ export default {
         high: this.selectedImage.largeImageURL
       }
       this.$localStorage.currentBg.save(newBgDefault)
-    },
-    getApiImages() {
-      return new Promise((resolve, reject) => {
-        api
-          .get('/', {
-            params: {
-              per_page: 200
-            }
-          })
-          .then(response => {
-            resolve(response.data.hits)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
     }
   }
 }

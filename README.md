@@ -17,7 +17,7 @@ change the version in **manifest.json**
 - [x] add line-through hover the text, only when delete button right next to todo is hovered
 - [ ] add breakline support, when creating a todo (shift + enter) 
 - [ ] add emoji support (i.e.  :joy)
-- [ ] add posibility to get Images by a certain category (add input,select for that, and set a default )
+- [x] add posibility to get Images by a certain category 
 - [ ] add posibility to reorder the todos dragging them (there is a plugin js for that)
 - [ ] add show completed
 - [ ] add delete permanently

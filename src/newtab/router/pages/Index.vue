@@ -36,7 +36,6 @@
     <nav class="menu menu--floating" role="navigation">
       <a
         @click.prevent="changeSelectedImage('animals')"
-        href="#"
         class="menu--floating__action"
         data-label="Animals"
       >
@@ -46,7 +45,6 @@
       </a>
       <a
         @click.prevent="changeSelectedImage('music')"
-        href="#"
         class="menu--floating__action"
         data-label="Music"
       >
@@ -56,7 +54,6 @@
       </a>
       <a
         @click.prevent="changeSelectedImage('sports')"
-        href="#"
         class="menu--floating__action"
         data-label="Sports"
       >
@@ -66,7 +63,6 @@
       </a>
       <a
         @click.prevent="changeSelectedImage('nature')"
-        href="#"
         class="menu--floating__action"
         data-label="Nature"
       >
@@ -86,10 +82,9 @@
 
       <a
         ref="changeBgIcon"
-        @click="changeSelectedImage()"
+        @click.prevent="changeSelectedImage()"
         class="menu--floating__action primary"
         data-label="Random"
-        href="#"
       ></a>
     </nav>
   </div>

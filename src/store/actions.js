@@ -1,17 +1,18 @@
 import * as types from './mutation-types';
 import api from '../services/api'
 
-export const getApiImages = ({ commit }, cat) => {
+export const getApiImage = ({ commit }, { category = '', page = 1, per_page = 3 }) => {
   return new Promise((resolve, reject) => {
     api
       .get('/', {
         params: {
-          per_page: 200,
-          category: cat
+          category,
+          page,
+          per_page
         }
       })
       .then(response => {
-        resolve(response.data.hits)
+        resolve(response.data.hits[0])
         // commit('set_images', response.data.hits);
       })
       .catch(error => {
@@ -19,3 +20,4 @@ export const getApiImages = ({ commit }, cat) => {
       })
   })
 };
+

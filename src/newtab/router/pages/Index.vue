@@ -34,27 +34,51 @@
       </a>
     </div>
     <nav class="menu menu--floating" role="navigation">
-      <a href="#" class="menu--floating__action" data-label="Animals">
+      <a
+        @click.prevent="changeSelectedImage('animals')"
+        href="#"
+        class="menu--floating__action"
+        data-label="Animals"
+      >
         <span class="icon">
           <i class="icofont-bear-face"></i>
         </span>
       </a>
-      <a href="#" class="menu--floating__action" data-label="Music">
+      <a
+        @click.prevent="changeSelectedImage('music')"
+        href="#"
+        class="menu--floating__action"
+        data-label="Music"
+      >
         <span class="icon">
           <i class="icofont-music"></i>
         </span>
       </a>
-      <a href="#" class="menu--floating__action" data-label="Sports">
+      <a
+        @click.prevent="changeSelectedImage('sports')"
+        href="#"
+        class="menu--floating__action"
+        data-label="Sports"
+      >
         <span class="icon">
           <i class="icofont-football"></i>
         </span>
       </a>
-      <a href="#" class="menu--floating__action" data-label="Nature">
+      <a
+        @click.prevent="changeSelectedImage('nature')"
+        href="#"
+        class="menu--floating__action"
+        data-label="Nature"
+      >
         <span class="icon">
           <i class="icofont-hill-sunny"></i>
         </span>
       </a>
-      <a href="#" class="menu--floating__action" data-label="Science">
+      <a
+        @click.prevent="changeSelectedImage('science')"
+        class="menu--floating__action"
+        data-label="Science"
+      >
         <span class="icon">
           <i class="icofont-brainstorming"></i>
         </span>
@@ -68,24 +92,6 @@
         href="#"
       ></a>
     </nav>
-    <!-- <div ref="changeBgIcon" @click="changeSelectedImage()" class="change-bg-icon"></div>
-    <div class="icofonts">
-      <div class="icon">
-        <i class="icofont-bear-face"></i>
-      </div>
-      <div class="icon">
-        <i class="icofont-music"></i>
-      </div>
-      <div class="icon">
-        <i class="icofont-hill-sunny"></i>
-      </div>
-      <div class="icon">
-        <i class="icofont-brainstorming"></i>
-      </div>
-      <div class="icon">
-        <i class="icofont-football"></i>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -153,10 +159,6 @@ export default {
     }
   },
   async mounted() {
-    // get 200 images
-    this.images = await this.$store.dispatch('getApiImages', '')
-    // get 1 image random
-    await this.getRandomBg()
     await this.handlePreloaderBoot()
   },
   methods: {
@@ -211,19 +213,20 @@ export default {
         heroBg.classList.remove('blur')
       }
     },
-    randomNumber() {
-      return Math.floor(Math.random() * 200) + 1
-    },
-    getRandomBg() {
+    getRandomPage() {
       return new Promise(resolve => {
-        this.selectedImage = this.images[this.randomNumber()]
-        resolve(this.selectedImage)
+        let rndNumber = Math.floor(Math.random() * (500 / 3)) + 1
+        resolve(rndNumber)
       })
     },
-    async changeSelectedImage() {
+    async changeSelectedImage(category = '') {
       let changeBgIcon = this.$refs.changeBgIcon
       changeBgIcon.classList.add('loading')
-      await this.getRandomBg()
+      let randomPage = await this.getRandomPage()
+      this.selectedImage = await this.$store.dispatch('getApiImage', {
+        category: category,
+        page: randomPage
+      })
       let heroBg = this.$refs.heroBg
       heroBg.classList.add('blur')
       heroBg.src = this.selectedImage.webformatURL
@@ -524,13 +527,7 @@ export default {
   &:hover {
     cursor: pointer;
   }
-  // &:active,
-  // &:focus,
-  // &:hover {
-  //   &:before {
-  //     color: #ddd;
-  //   }
-  // }
+
   //every gray circle option
   &:not(:last-child) {
     height: 44px;

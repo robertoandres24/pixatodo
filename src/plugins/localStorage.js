@@ -3,27 +3,27 @@ import Vue from 'vue'
 var STORAGE_KEY = 'pixatodo-todos'
 var BGIMAGE_KEY = 'bgImage'
 var todoStorage = {
-  fetch: function() {
+  fetch: function () {
     var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-    todos.forEach(function(todo, index) {
+    todos.forEach(function (todo, index) {
       todo.id = index
     })
     todoStorage.uid = todos.length
     return todos
   },
-  save: function(todos) {
+  save: function (todos) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   }
 }
 var currentBg = {
-  fetch: function() {
+  fetch: function () {
     var image = JSON.parse(localStorage.getItem(BGIMAGE_KEY))
     return image
   },
-  save: function(imgSource) {
+  save: function (imgSource) {
     localStorage.setItem(BGIMAGE_KEY, JSON.stringify(imgSource))
   },
-  destroy: function() {
+  destroy: function () {
     localStorage.removeItem(BGIMAGE_KEY)
   }
 }

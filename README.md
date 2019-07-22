@@ -19,8 +19,7 @@ change the version in **manifest.json**
 - [ ] add emoji support (i.e.  :joy)
 - [x] add posibility to get Images by a certain category 
 - [ ] add posibility to reorder the todos dragging them (there is a plugin js for that)
-- [ ] add show completed
-- [ ] add delete permanently
+- [ ] add backend service so that saved images persist  
 
 ### Credits
 

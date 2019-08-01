@@ -143,13 +143,8 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
-		let photos = await this.$store.dispatch('getRandomImage', 'laptop')
-		console.log(photos)
 	},
 	methods: {
-		newline() {
-			console.log('this new line')
-		},
 		addTodo() {
 			let value = this.$refs.newTodo.innerText.trim()
 			if (!value) {
@@ -206,34 +201,25 @@ export default {
 				heroBg.classList.remove('blur')
 			}
 		},
-		getRandomPage() {
-			return new Promise(resolve => {
-				let rndNumber = Math.floor(Math.random() * (500 / 3)) + 1
-				resolve(rndNumber)
-			})
-		},
-		async changeSelectedImage(category = '') {
+
+		async changeSelectedImage(query = '') {
 			let changeBgIcon = this.$refs.changeBgIcon
 			changeBgIcon.classList.add('loading')
-			let randomPage = await this.getRandomPage()
-			this.selectedImage = await this.$store.dispatch('getApiImage', {
-				category: category,
-				page: randomPage
-			})
+			this.selectedImage = await this.$store.dispatch('getRandomImage', query)
 			let heroBg = this.$refs.heroBg
 			heroBg.classList.add('blur')
-			heroBg.src = this.selectedImage.webformatURL
+			heroBg.src = this.selectedImage.urls.small
 			let largeImg = new Image()
 			largeImg.onload = function() {
 				heroBg.src = this.src
 				heroBg.classList.remove('blur')
 				changeBgIcon.classList.remove('loading')
 			}
-			largeImg.src = this.selectedImage.largeImageURL
+			largeImg.src = this.selectedImage.urls.full
 			//add new default bgImage to local Storage
 			let newBgDefault = {
-				low: this.selectedImage.webformatURL,
-				high: this.selectedImage.largeImageURL
+				low: this.selectedImage.urls.small,
+				high: this.selectedImage.urls.full
 			}
 			this.$localStorage.currentBg.save(newBgDefault)
 		}

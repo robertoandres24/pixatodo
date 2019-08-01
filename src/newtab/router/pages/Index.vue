@@ -143,6 +143,8 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
+		let photos = await this.$store.dispatch('getRandomImage', 'laptop')
+		console.log(photos)
 	},
 	methods: {
 		newline() {

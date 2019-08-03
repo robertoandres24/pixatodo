@@ -4,7 +4,8 @@ const api = axios.create({
   baseURL: 'https://api.unsplash.com',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Accept-Version': 'v1'
   }
 })
 api.defaults.params = {}

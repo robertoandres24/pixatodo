@@ -1,6 +1,6 @@
 <template>
 	<div class="main-screen">
-		<img ref="heroBg" :src="bgImage ? bgImage.low : defaultBgLow" alt class="hero-bg blur" />
+		<img ref="heroBg" :src="bgImage ? bgImage.urls.small : defaultBgLow" alt class="hero-bg blur" />
 		<div class="overlay"></div>
 		<div class="content">
 			<!-- TODO: create span that act like placeholder -->
@@ -42,10 +42,8 @@
 			</a>
 			<span class="unsplash">
 				Photo by
-				<a
-					href="https://unsplash.com/@anniespratt?utm_source=your_app_name&utm_medium=referral"
-				>Annie Spratt</a> on
-				<a href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral">Unsplash</a>
+				<a :href="linkToAuthor">{{bgImage.user.name}}</a> on
+				<a :href="linkToUnsplash">Unsplash</a>
 			</span>
 		</div>
 		<nav class="menu menu--floating" role="navigation">
@@ -112,7 +110,6 @@ export default {
 	data() {
 		return {
 			images: [],
-			selectedImage: {},
 			newTodo: '',
 			editedTodo: '',
 			todos: this.$localStorage.todoStorage.fetch(),
@@ -122,6 +119,14 @@ export default {
 		}
 	},
 	computed: {
+		linkToAuthor() {
+			return `https://unsplash.com/@${
+				this.bgImage.user.username
+			}?utm_source=pixatodo&utm_medium=referral`
+		},
+		linkToUnsplash() {
+			return 'https://unsplash.com/?utm_source=pixatodo&utm_medium=referral'
+		},
 		pendingTasks() {
 			if (this.todos.length) {
 				return 'My pending Tasks'
@@ -150,6 +155,7 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
+		console.log(this.bgImage)
 	},
 	methods: {
 		addTodo() {
@@ -194,7 +200,7 @@ export default {
 		handlePreloaderBoot() {
 			let heroBg = this.$refs.heroBg
 			let largeImg = new Image()
-			let newBg = this.bgImage ? this.bgImage.high : this.defaultBgHigh
+			let newBg = this.bgImage ? this.bgImage.urls.full : this.defaultBgHigh
 			setTimeout(() => {
 				largeImg.src = newBg
 			}, 50)
@@ -212,23 +218,18 @@ export default {
 		async changeSelectedImage(query = '') {
 			let changeBgIcon = this.$refs.changeBgIcon
 			changeBgIcon.classList.add('loading')
-			this.selectedImage = await this.$store.dispatch('getRandomImage', query)
+			this.bgImage = await this.$store.dispatch('getRandomImage', query)
 			let heroBg = this.$refs.heroBg
 			heroBg.classList.add('blur')
-			heroBg.src = this.selectedImage.urls.small
+			heroBg.src = this.bgImage.urls.small
 			let largeImg = new Image()
 			largeImg.onload = function() {
 				heroBg.src = this.src
 				heroBg.classList.remove('blur')
 				changeBgIcon.classList.remove('loading')
 			}
-			largeImg.src = this.selectedImage.urls.full
-			//add new default bgImage to local Storage
-			let newBgDefault = {
-				low: this.selectedImage.urls.small,
-				high: this.selectedImage.urls.full
-			}
-			this.$localStorage.currentBg.save(newBgDefault)
+			largeImg.src = this.bgImage.urls.full
+			this.$localStorage.currentBg.save(this.bgImage)
 		}
 	}
 }

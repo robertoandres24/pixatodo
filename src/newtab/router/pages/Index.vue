@@ -40,6 +40,13 @@
 			<a href="https://github.com/robertoandres24/pixatodo">
 				<span class="icon github-icon"></span>
 			</a>
+			<span class="unsplash">
+				Photo by
+				<a
+					href="https://unsplash.com/@anniespratt?utm_source=your_app_name&utm_medium=referral"
+				>Annie Spratt</a> on
+				<a href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral">Unsplash</a>
+			</span>
 		</div>
 		<nav class="menu menu--floating" role="navigation">
 			<a
@@ -231,7 +238,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 .credits {
-	position: absolute;
+	position: fixed;
 	z-index: 2;
 	left: 0;
 	bottom: 0;
@@ -239,19 +246,34 @@ export default {
 	font-size: 0.8rem;
 	display: flex;
 	color: #ddd;
-	label {
-		margin-right: 0.5rem;
-	}
-	a {
+	* {
 		color: #ddd;
+		display: inline-block;
+		transition: all 1s ease;
 	}
-	.dash {
-		margin: 0 1rem;
+	> * {
+		height: 1.5rem;
+		margin: 0 0.5rem;
+		display: flex;
+		align-items: center;
 	}
-	.inspired-by a {
-		margin-right: 0.5rem;
+	.icon {
+		height: 1.5rem;
+		width: 1.5rem;
+	}
+	.icon {
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	.github-icon {
+		background-image: url(/static/images/github-white.svg);
+	}
+	.unsplash a {
+		margin: 0 0.3rem;
 	}
 }
+
 .content {
 	position: relative;
 	width: 600px;
@@ -407,21 +429,6 @@ export default {
 	height: 100%;
 	background: #000;
 	opacity: 0.5;
-}
-
-.github-icon {
-	background-image: url(/static/images/github-white.svg);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	position: fixed;
-	z-index: 2;
-	height: 1.5rem;
-	width: 1.5rem;
-	bottom: 0;
-	left: 0;
-	margin: 1rem;
-	transition: all 1s ease;
 }
 
 @keyframes rotate {

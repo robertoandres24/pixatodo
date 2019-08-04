@@ -1,7 +1,7 @@
 {
   "name": "pixatodo",
   "version": "1.0.0",
-  "description": "A Vue.js web extension",
+  "description": "A Chrome Extension app that replace your New Tab page with a simple to-do list, in addition to get beautiful wallpapers that you can change with a click",
   "author": "roberto obando <robertoandres24@gmail.com>",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",

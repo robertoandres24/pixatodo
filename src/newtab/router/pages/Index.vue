@@ -56,24 +56,7 @@
 					<i class="icofont-bear-face"></i>
 				</span>
 			</a>
-			<a
-				@click.prevent="changeSelectedImage('music')"
-				class="menu--floating__action"
-				data-label="Music"
-			>
-				<span class="icon">
-					<i class="icofont-music"></i>
-				</span>
-			</a>
-			<a
-				@click.prevent="changeSelectedImage('sports')"
-				class="menu--floating__action"
-				data-label="Sports"
-			>
-				<span class="icon">
-					<i class="icofont-football"></i>
-				</span>
-			</a>
+
 			<a
 				@click.prevent="changeSelectedImage('nature')"
 				class="menu--floating__action"
@@ -83,13 +66,62 @@
 					<i class="icofont-hill-sunny"></i>
 				</span>
 			</a>
+
 			<a
-				@click.prevent="changeSelectedImage('science')"
+				@click.prevent="changeSelectedImage('fashion')"
 				class="menu--floating__action"
-				data-label="Science"
+				data-label="Fashion"
 			>
 				<span class="icon">
-					<i class="icofont-brainstorming"></i>
+					<i class="icofont-woman-bird"></i>
+				</span>
+			</a>
+
+			<a
+				@click.prevent="changeSelectedImage('arquitecture')"
+				class="menu--floating__action"
+				data-label="Arquitecture"
+			>
+				<span class="icon">
+					<i class="icofont-castle"></i>
+				</span>
+			</a>
+
+			<a
+				@click.prevent="changeSelectedImage('wallpapers')"
+				class="menu--floating__action"
+				data-label="Wallpapers"
+			>
+				<span class="icon">
+					<i class="icofont-image"></i>
+				</span>
+			</a>
+
+			<a
+				@click.prevent="changeSelectedImage('travel')"
+				class="menu--floating__action"
+				data-label="Travel"
+			>
+				<span class="icon">
+					<i class="icofont-travelling"></i>
+				</span>
+			</a>
+			<a
+				@click.prevent="changeSelectedImage('business')"
+				class="menu--floating__action"
+				data-label="Business & Work"
+			>
+				<span class="icon">
+					<i class="icofont-macbook"></i>
+				</span>
+			</a>
+			<a
+				@click.prevent="changeSelectedImage('arts')"
+				class="menu--floating__action"
+				data-label="Arts & Culture"
+			>
+				<span class="icon">
+					<i class="icofont-book"></i>
 				</span>
 			</a>
 
@@ -529,7 +561,7 @@ export default {
 		transform: translateY(50px);
 		width: 44px;
 
-		@for $i from 1 through 6 {
+		@for $i from 1 through 9 {
 			&:nth-last-child(#{$i}) {
 				transition-delay: $i * 50ms;
 			}

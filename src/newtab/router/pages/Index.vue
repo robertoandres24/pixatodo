@@ -187,7 +187,8 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
-		console.log(this.bgImage)
+		console.log(this.$emojis.find('smile'))
+		// this.$refs.newTodo.innerText = String.fromCodePoint(0x1f643)
 	},
 	methods: {
 		addTodo() {

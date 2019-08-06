@@ -40,7 +40,7 @@
 			<a href="https://github.com/robertoandres24/pixatodo">
 				<span class="icon github-icon"></span>
 			</a>
-			<span class="unsplash">
+			<span v-if="bgImage" class="unsplash">
 				Photo by
 				<a :href="linkToAuthor">{{bgImage.user.name}}</a> on
 				<a :href="linkToUnsplash">Unsplash</a>

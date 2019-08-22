@@ -1,143 +1,149 @@
 <template>
-	<div class="main-screen">
-		<img ref="heroBg" :src="bgImage ? bgImage.urls.small : defaultBgLow" alt class="hero-bg blur" />
-		<div class="overlay"></div>
-		<div class="content">
-			<!-- TODO: create span that act like placeholder -->
-			<div
-				class="create-todo"
-				ref="newTodo"
-				contenteditable="true"
-				@keydown.enter.exact.prevent
-				@keyup.enter.exact="addTodo"
-			>
-				<!-- <input type="text"  v-model="newTodo" @keyup.enter="addTodo"> -->
-			</div>
-			<div v-show="todos.length" class="todo-list">
-				<div
-					@dblclick="editTodo(todo)"
-					v-for="(todo, index) in todos"
-					:key="index"
-					class="todo"
-					:class="{ editing: todo == editedTodo }"
-				>
-					<label for>{{ todo.title }}</label>
-					<label
-						contenteditable="true"
-						:ref="`editTodo-${todo.id}`"
-						v-todo-focus="todo == editedTodo"
-						@blur="doneEdit(todo)"
-						@keydown.enter.exact.prevent
-						@keyup.enter.exact="doneEdit(todo)"
-						@keyup.esc="cancelEdit(todo)"
-						class="edit"
-					></label>
-					<button @click="removeTodo(todo)" class="destroy"></button>
-				</div>
-			</div>
-		</div>
-		<div class="credits">
-			<a href="https://github.com/robertoandres24/pixatodo">
-				<span class="icon github-icon"></span>
-			</a>
-			<span v-if="bgImage" class="unsplash">
-				Photo by
-				<a :href="linkToAuthor">{{bgImage.user.name}}</a> on
-				<a :href="linkToUnsplash">Unsplash</a>
-			</span>
-		</div>
-		<nav class="menu menu--floating" role="navigation">
-			<a
-				@click.prevent="changeSelectedImage('animals')"
-				class="menu--floating__action"
-				data-label="Animals"
-			>
-				<span class="icon">
-					<i class="icofont-bear-face"></i>
-				</span>
-			</a>
+  <div class="main-screen">
+    <img ref="heroBg" :src="bgImage ? bgImage.urls.small : defaultBgLow" alt class="hero-bg blur" />
+    <div class="overlay"></div>
+    <div class="content">
+      <!-- TODO: create span that act like placeholder -->
+      <div
+        class="create-todo"
+        ref="newTodo"
+        contenteditable="true"
+        @keydown.enter.exact.prevent
+        @keyup.enter.exact="addTodo"
+      >
+        <!-- <input type="text"  v-model="newTodo" @keyup.enter="addTodo"> -->
+      </div>
+      <div v-show="todos.length" class="todo-list">
+        <div
+          @dblclick="editTodo(todo)"
+          v-for="(todo, index) in todos"
+          :key="index"
+          class="todo"
+          :class="{ editing: todo == editedTodo }"
+        >
+          <label for>{{ todo.title }}</label>
+          <label
+            contenteditable="true"
+            :ref="`editTodo-${todo.id}`"
+            v-todo-focus="todo == editedTodo"
+            @blur="doneEdit(todo)"
+            @keydown.enter.exact.prevent
+            @keyup.enter.exact="doneEdit(todo)"
+            @keyup.esc="cancelEdit(todo)"
+            class="edit"
+          ></label>
+          <button @click="removeTodo(todo)" class="destroy"></button>
+        </div>
+      </div>
+    </div>
+    <div class="credits">
+      <a href="https://github.com/robertoandres24/pixatodo">
+        <span class="icon github-icon"></span>
+      </a>
+      <span v-if="bgImage" class="unsplash">
+        Photo by
+        <a :href="linkToAuthor">{{bgImage.user.name}}</a> on
+        <a :href="linkToUnsplash">Unsplash</a>
+      </span>
+    </div>
+    <nav class="menu menu--floating" role="navigation">
+      <a
+        @click.prevent="changeSelectedImage('animals')"
+        class="menu--floating__action"
+        data-label="Animals"
+      >
+        <span class="icon">
+          <i class="icofont-bear-face"></i>
+        </span>
+      </a>
 
-			<a
-				@click.prevent="changeSelectedImage('nature')"
-				class="menu--floating__action"
-				data-label="Nature"
-			>
-				<span class="icon">
-					<i class="icofont-hill-sunny"></i>
-				</span>
-			</a>
+      <a
+        @click.prevent="changeSelectedImage('nature')"
+        class="menu--floating__action"
+        data-label="Nature"
+      >
+        <span class="icon">
+          <i class="icofont-hill-sunny"></i>
+        </span>
+      </a>
 
-			<a
-				@click.prevent="changeSelectedImage('fashion')"
-				class="menu--floating__action"
-				data-label="Fashion"
-			>
-				<span class="icon">
-					<i class="icofont-woman-bird"></i>
-				</span>
-			</a>
+      <a
+        @click.prevent="changeSelectedImage('fashion')"
+        class="menu--floating__action"
+        data-label="Fashion"
+      >
+        <span class="icon">
+          <i class="icofont-woman-bird"></i>
+        </span>
+      </a>
 
-			<a
-				@click.prevent="changeSelectedImage('arquitecture')"
-				class="menu--floating__action"
-				data-label="Arquitecture"
-			>
-				<span class="icon">
-					<i class="icofont-castle"></i>
-				</span>
-			</a>
+      <a
+        @click.prevent="changeSelectedImage('arquitecture')"
+        class="menu--floating__action"
+        data-label="Arquitecture"
+      >
+        <span class="icon">
+          <i class="icofont-castle"></i>
+        </span>
+      </a>
 
-			<a
-				@click.prevent="changeSelectedImage('wallpapers')"
-				class="menu--floating__action"
-				data-label="Wallpapers"
-			>
-				<span class="icon">
-					<i class="icofont-image"></i>
-				</span>
-			</a>
+      <a
+        @click.prevent="changeSelectedImage('wallpapers')"
+        class="menu--floating__action"
+        data-label="Wallpapers"
+      >
+        <span class="icon">
+          <i class="icofont-image"></i>
+        </span>
+      </a>
 
-			<a
-				@click.prevent="changeSelectedImage('travel')"
-				class="menu--floating__action"
-				data-label="Travel"
-			>
-				<span class="icon">
-					<i class="icofont-travelling"></i>
-				</span>
-			</a>
-			<a
-				@click.prevent="changeSelectedImage('business')"
-				class="menu--floating__action"
-				data-label="Business & Work"
-			>
-				<span class="icon">
-					<i class="icofont-macbook"></i>
-				</span>
-			</a>
-			<a
-				@click.prevent="changeSelectedImage('arts')"
-				class="menu--floating__action"
-				data-label="Arts & Culture"
-			>
-				<span class="icon">
-					<i class="icofont-book"></i>
-				</span>
-			</a>
+      <a
+        @click.prevent="changeSelectedImage('travel')"
+        class="menu--floating__action"
+        data-label="Travel"
+      >
+        <span class="icon">
+          <i class="icofont-travelling"></i>
+        </span>
+      </a>
+      <a
+        @click.prevent="changeSelectedImage('business')"
+        class="menu--floating__action"
+        data-label="Business & Work"
+      >
+        <span class="icon">
+          <i class="icofont-macbook"></i>
+        </span>
+      </a>
+      <a
+        @click.prevent="changeSelectedImage('arts')"
+        class="menu--floating__action"
+        data-label="Arts & Culture"
+      >
+        <span class="icon">
+          <i class="icofont-book"></i>
+        </span>
+      </a>
 
-			<a
-				ref="changeBgIcon"
-				@click.prevent="changeSelectedImage()"
-				class="menu--floating__action primary"
-				data-label="Random"
-			></a>
-		</nav>
-	</div>
+      <a
+        ref="changeBgIcon"
+        @click.prevent="changeSelectedImage()"
+        class="menu--floating__action primary"
+        data-label="Random"
+      ></a>
+    </nav>
+  </div>
 </template>
 
 <script>
 import setCursorManager from '../../../mixins/setCursorManager'
+import { Emoji, EmojiIndex } from 'emoji-mart-vue-fast'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
+import data from 'emoji-mart-vue-fast/data/all.json'
+const emojiIndex = new EmojiIndex(data)
+
 export default {
+	components: { Emoji },
 	mixins: [setCursorManager],
 	data() {
 		return {
@@ -151,6 +157,9 @@ export default {
 		}
 	},
 	computed: {
+		santaEmojiObject() {
+			return emojiIndex.findEmoji(':santa:')
+		},
 		linkToAuthor() {
 			return `https://unsplash.com/@${
 				this.bgImage.user.username
@@ -187,6 +196,12 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
+		console.log(
+			emojiIndex.search('cry').map(o => {
+				console.log(o)
+				return o.native
+			})
+		)
 		// this.$refs.newTodo.innerText = String.fromCodePoint(0x1f643)
 	},
 	methods: {

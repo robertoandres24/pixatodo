@@ -68,26 +68,6 @@
       </a>
 
       <a
-        @click.prevent="changeSelectedImage('fashion')"
-        class="menu--floating__action"
-        data-label="Fashion"
-      >
-        <span class="icon">
-          <i class="icofont-woman-bird"></i>
-        </span>
-      </a>
-
-      <a
-        @click.prevent="changeSelectedImage('arquitecture')"
-        class="menu--floating__action"
-        data-label="Arquitecture"
-      >
-        <span class="icon">
-          <i class="icofont-castle"></i>
-        </span>
-      </a>
-
-      <a
         @click.prevent="changeSelectedImage('wallpapers')"
         class="menu--floating__action"
         data-label="Wallpapers"
@@ -366,7 +346,6 @@ export default {
 		margin: 0.8rem 0;
 		overflow: hidden;
 		line-height: 1.4em;
-		cursor: pointer;
 		user-select: text;
 		white-space: pre-wrap;
 		word-wrap: break-word;
@@ -388,7 +367,7 @@ export default {
 		}
 	}
 	.todo .destroy {
-		display: none;
+		opacity: 0;
 		position: absolute;
 		top: -0.5rem;
 		right: -0.5rem;
@@ -400,7 +379,7 @@ export default {
 		color: white;
 
 		background: transparent;
-		transition: color 0.2s ease-out;
+		transition: all 0.3s ease;
 		border: none;
 	}
 	.todo {
@@ -409,7 +388,7 @@ export default {
 	}
 	.todo .destroy {
 		&:hover {
-			color: red;
+			color: #aaa;
 			cursor: pointer;
 			& + label {
 				text-decoration: line-through;
@@ -424,7 +403,7 @@ export default {
 	}
 
 	.todo:hover .destroy {
-		display: block;
+		opacity: 1;
 	}
 }
 

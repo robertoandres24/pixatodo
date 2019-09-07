@@ -45,7 +45,9 @@
         <a :href="linkToAuthor">{{bgImage.user.name}}</a> on
         <a :href="linkToUnsplash">Unsplash</a>
       </span>
-      <a :href="downloadUrl" @click.prevent="downloadItem(downloadUrl)">Descargar</a>
+      <a title :href="downloadUrl" @click.prevent="downloadItem(downloadUrl)">
+        <i class="icofont-download icofont-md"></i>
+      </a>
     </div>
     <nav class="menu menu--floating" role="navigation">
       <a

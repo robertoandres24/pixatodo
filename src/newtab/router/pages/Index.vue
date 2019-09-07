@@ -169,6 +169,12 @@ export default {
 				this.$localStorage.todoStorage.save(todos)
 			},
 			deep: true
+		},
+		bgImage: {
+			handler: function(bgImage) {
+				this.downloadUrl = this.bgImage.urls.full
+			},
+			deep: true
 		}
 	},
 	async mounted() {

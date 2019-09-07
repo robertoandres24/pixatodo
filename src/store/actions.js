@@ -17,4 +17,17 @@ export const getRandomImage = ({ }, query) => {
       })
   })
 };
+export const getDownloadUrl = ({ }, endpoint) => {
+  return new Promise((resolve, reject) => {
+    apiUnsplash
+      .get(endpoint)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+};
+
 

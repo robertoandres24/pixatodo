@@ -45,6 +45,7 @@
         <a :href="linkToAuthor">{{bgImage.user.name}}</a> on
         <a :href="linkToUnsplash">Unsplash</a>
       </span>
+      <a :href="downloadUrl" @click.prevent="downloadItem(downloadUrl)">Descargar</a>
     </div>
     <nav class="menu menu--floating" role="navigation">
       <a
@@ -117,13 +118,9 @@
 
 <script>
 import setCursorManager from '../../../mixins/setCursorManager'
-import { Emoji, EmojiIndex } from 'emoji-mart-vue-fast'
-import 'emoji-mart-vue-fast/css/emoji-mart.css'
-import data from 'emoji-mart-vue-fast/data/all.json'
-const emojiIndex = new EmojiIndex(data)
+import axios from 'axios'
 
 export default {
-	components: { Emoji },
 	mixins: [setCursorManager],
 	data() {
 		return {
@@ -133,13 +130,11 @@ export default {
 			todos: this.$localStorage.todoStorage.fetch(),
 			bgImage: this.$localStorage.currentBg.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
-			defaultBgHigh: '/static/images/best-friend-high.jpg'
+			defaultBgHigh: '/static/images/best-friend-high.jpg',
+			downloadUrl: ''
 		}
 	},
 	computed: {
-		santaEmojiObject() {
-			return emojiIndex.findEmoji(':santa:')
-		},
 		linkToAuthor() {
 			return `https://unsplash.com/@${
 				this.bgImage.user.username
@@ -176,15 +171,33 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
-		console.log(
-			emojiIndex.search('cry').map(o => {
-				console.log(o)
-				return o.native
-			})
-		)
-		// this.$refs.newTodo.innerText = String.fromCodePoint(0x1f643)
+		const { url } = await this.linkToDownload()
+		this.downloadUrl = url
 	},
 	methods: {
+		downloadItem(url) {
+			axios
+				.get(url, { responseType: 'blob' })
+				.then(({ data }) => {
+					const blob = new Blob([data], { type: 'application/image' })
+					let link = document.createElement('a')
+					link.href = window.URL.createObjectURL(blob)
+					link.download = 'unsplash-image.jpg'
+					link.click()
+				})
+				.catch(error => console.error(error))
+		},
+		async linkToDownload() {
+			return new Promise((resolve, reject) => {
+				const endpoint = `${this.bgImage.links.download_location}?client_id=${
+					process.env.UNSPLASH_KEY
+				}`
+				this.$store
+					.dispatch('getDownloadUrl', endpoint)
+					.then(url => resolve(url))
+					.catch(e => reject(e))
+			})
+		},
 		addTodo() {
 			let value = this.$refs.newTodo.innerText.trim()
 			if (!value) {

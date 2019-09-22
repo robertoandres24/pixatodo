@@ -45,9 +45,6 @@
         <a :href="linkToAuthor">{{bgImage.user.name}}</a> on
         <a :href="linkToUnsplash">Unsplash</a>
       </span>
-      <a title :href="downloadUrl" @click.prevent="downloadItem(downloadUrl)">
-        <i class="icofont-download icofont-md"></i>
-      </a>
     </div>
     <nav class="menu menu--floating" role="navigation">
       <a
@@ -126,14 +123,12 @@ export default {
 	mixins: [setCursorManager],
 	data() {
 		return {
-			images: [],
 			newTodo: '',
 			editedTodo: '',
 			todos: this.$localStorage.todoStorage.fetch(),
 			bgImage: this.$localStorage.currentBg.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
-			defaultBgHigh: '/static/images/best-friend-high.jpg',
-			downloadUrl: ''
+			defaultBgHigh: '/static/images/best-friend-high.jpg'
 		}
 	},
 	computed: {
@@ -169,43 +164,12 @@ export default {
 				this.$localStorage.todoStorage.save(todos)
 			},
 			deep: true
-		},
-		bgImage: {
-			handler: function(bgImage) {
-				this.downloadUrl = this.bgImage.urls.full
-			},
-			deep: true
 		}
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
-		const { url } = await this.linkToDownload()
-		this.downloadUrl = url
 	},
 	methods: {
-		downloadItem(url) {
-			axios
-				.get(url, { responseType: 'blob' })
-				.then(({ data }) => {
-					const blob = new Blob([data], { type: 'application/image' })
-					let link = document.createElement('a')
-					link.href = window.URL.createObjectURL(blob)
-					link.download = 'unsplash-image.jpg'
-					link.click()
-				})
-				.catch(error => console.error(error))
-		},
-		async linkToDownload() {
-			return new Promise((resolve, reject) => {
-				const endpoint = `${this.bgImage.links.download_location}?client_id=${
-					process.env.UNSPLASH_KEY
-				}`
-				this.$store
-					.dispatch('getDownloadUrl', endpoint)
-					.then(url => resolve(url))
-					.catch(e => reject(e))
-			})
-		},
 		addTodo() {
 			let value = this.$refs.newTodo.innerText.trim()
 			if (!value) {
@@ -267,6 +231,10 @@ export default {
 			let changeBgIcon = this.$refs.changeBgIcon
 			changeBgIcon.classList.add('loading')
 			this.bgImage = await this.$store.dispatch('getRandomImage', query)
+			await this.$store.dispatch(
+				'triggeringDownloadEndpoint',
+				this.bgImage.links.download_location
+			)
 			let heroBg = this.$refs.heroBg
 			heroBg.classList.add('blur')
 			heroBg.src = this.bgImage.urls.small

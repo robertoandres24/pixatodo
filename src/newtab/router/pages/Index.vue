@@ -5,11 +5,13 @@
     <div class="content">
       <!-- TODO: create span that act like placeholder -->
       <div
+        id="createTodo"
         class="create-todo"
         ref="newTodo"
         contenteditable="true"
         @keydown.enter.exact.prevent
-        @keyup.enter.exact="addTodo"
+        @keyup.enter.exact="addTodo()"
+        @keyup="checkColonKey($event)"
       >
         <!-- <input type="text"  v-model="newTodo" @keyup.enter="addTodo"> -->
       </div>
@@ -128,7 +130,12 @@ export default {
 			todos: this.$localStorage.todoStorage.fetch(),
 			bgImage: this.$localStorage.currentBg.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
-			defaultBgHigh: '/static/images/best-friend-high.jpg'
+			defaultBgHigh: '/static/images/best-friend-high.jpg',
+			persons: [
+				{ name: 'guiño', emojiCode: '&#x1F609' },
+				{ name: 'alegria', emojiCode: '&#x1F602' },
+				{ name: 'cara invertida', emojiCode: '&#x1F643' }
+			]
 		}
 	},
 	computed: {
@@ -168,12 +175,23 @@ export default {
 	},
 	async mounted() {
 		await this.handlePreloaderBoot()
+		$('div#createTodo').tagautocomplete({
+			source: this.persons,
+			character: ':', //accept both @ and #,
+			renderKey: 'emojiCode'
+		})
 	},
 	methods: {
-		addTodo() {
+		checkColonKey(e) {
+			console.log(e)
+		},
+		addTodo(e) {
 			let value = this.$refs.newTodo.innerText.trim()
 			if (!value) {
 				this.$refs.newTodo.innerText = ''
+				return
+			}
+			if (this.creatingEmoji) {
 				return
 			}
 			this.todos.push({
@@ -253,6 +271,25 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lato');
+
+//typeahead
+
+.typeahead {
+	z-index: 999;
+	font-size: 20px;
+	color: #fff;
+	background: #aaa;
+	width: 100%;
+	a {
+		color: #fff;
+		text-decoration: none;
+		padding: 7px;
+		display: block;
+	}
+	li.active {
+		background: #666;
+	}
+}
 
 .credits {
 	position: fixed;

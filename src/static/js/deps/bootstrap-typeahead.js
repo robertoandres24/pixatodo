@@ -105,7 +105,6 @@
       if (!items.length) {
         return this.shown ? this.hide() : this
       }
-      console.log(items)
       return this.render(items.slice(0, this.options.items)).show()
     }
 

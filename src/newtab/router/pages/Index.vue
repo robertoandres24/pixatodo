@@ -11,7 +11,6 @@
         contenteditable="true"
         @keydown.enter.exact.prevent
         @keyup.enter.exact="addTodo()"
-        @keyup="checkColonKey($event)"
       >
         <!-- <input type="text"  v-model="newTodo" @keyup.enter="addTodo"> -->
       </div>
@@ -33,6 +32,7 @@
             @keyup.enter.exact="doneEdit(todo)"
             @keyup.esc="cancelEdit(todo)"
             class="edit"
+            :id="`edit-${todo.id}`"
           ></label>
           <button @click="removeTodo(todo)" class="destroy"></button>
         </div>
@@ -132,9 +132,11 @@ export default {
 			defaultBgLow: '/static/images/best-friend-low.jpg',
 			defaultBgHigh: '/static/images/best-friend-high.jpg',
 			persons: [
-				{ name: 'guiño', emojiCode: '&#x1F609' },
-				{ name: 'alegria', emojiCode: '&#x1F602' },
-				{ name: 'cara invertida', emojiCode: '&#x1F643' }
+				{ name: 'guiño', emojiCode: '1F609' },
+				{ name: 'alegria', emojiCode: '1F602' },
+				{ name: 'cara invertida', emojiCode: '1F643' },
+				{ name: 'hash', emojiCode: '0023-FE0F-20E3' },
+				{ name: 'flag', emojiCode: '1F1E6-1F1E8' }
 			]
 		}
 	},
@@ -181,9 +183,28 @@ export default {
 			renderKey: 'emojiCode'
 		})
 	},
+	updated() {
+		this.initializeTagAutocompleteEditLabels()
+	},
 	methods: {
-		checkColonKey(e) {
-			console.log(e)
+		initializeTagAutocompleteEditLabels() {
+			this.todos.forEach(todo => {
+				$(`#edit-${todo.id}`).tagautocomplete({
+					source: this.persons,
+					character: ':', //accept both @ and #,
+					renderKey: 'emojiCode'
+				})
+			})
+		},
+		creatingEmoji(el) {
+			if (
+				$(el)
+					.siblings('.typeahead')
+					.css('display') == 'block'
+			) {
+				return true
+			}
+			return false
 		},
 		addTodo(e) {
 			let value = this.$refs.newTodo.innerText.trim()
@@ -191,7 +212,7 @@ export default {
 				this.$refs.newTodo.innerText = ''
 				return
 			}
-			if (this.creatingEmoji) {
+			if (this.creatingEmoji(this.$refs.newTodo)) {
 				return
 			}
 			this.todos.push({
@@ -212,6 +233,9 @@ export default {
 
 		doneEdit: function(todo) {
 			if (!this.editedTodo) {
+				return
+			}
+			if (this.creatingEmoji(this.$refs[`editTodo-${todo.id}`])) {
 				return
 			}
 			this.editedTodo = null
@@ -278,7 +302,7 @@ export default {
 	z-index: 999;
 	font-size: 20px;
 	color: #fff;
-	background: #aaa;
+	background: #666;
 	width: 100%;
 	a {
 		color: #fff;
@@ -287,7 +311,7 @@ export default {
 		display: block;
 	}
 	li.active {
-		background: #666;
+		background: #aaa;
 	}
 }
 

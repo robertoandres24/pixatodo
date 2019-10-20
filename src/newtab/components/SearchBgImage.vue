@@ -5,8 +5,9 @@
         <i class="icofont-search icofont-lg"></i>
       </span>
       <input
+        ref="search"
         v-model="query"
-        @keyup.enter="$emit('search-image', query)"
+        @keyup.enter="searchImage"
         type="text"
         id="search"
         placeholder="Search..."
@@ -20,6 +21,12 @@ export default {
 	data() {
 		return {
 			query: this.$localStorage.currentTag.fetch()
+		}
+	},
+	methods: {
+		searchImage() {
+			this.$emit('search-image', this.query)
+			this.$refs.search.blur()
 		}
 	}
 }

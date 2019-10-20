@@ -6,7 +6,7 @@
       </span>
       <input
         v-model="query"
-        @keyup.enter="$emit('get-random-image', query)"
+        @keyup.enter="$emit('search-image', {$event, query})"
         type="text"
         id="search"
         placeholder="Search..."

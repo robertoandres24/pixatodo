@@ -1,6 +1,6 @@
 <template>
   <div class="main-screen">
-    <img ref="heroBg" :src="bgImage ? bgImage.urls.small : defaultBgLow" alt class="hero-bg blur" />
+    <img ref="heroBg" :src="bgImage ? bgImage.urls.small: ''" alt class="hero-bg blur" />
     <div class="overlay"></div>
     <div class="content">
       <!-- TODO: create span that act like placeholder -->
@@ -32,7 +32,7 @@
         <a :href="linkToUnsplash">Unsplash</a>
       </span>
     </div>
-    <searchBgImage @get-random-image="getRandomImage" />
+    <searchBgImage @search-image="searchImage" />
   </div>
 </template>
 
@@ -41,6 +41,7 @@ import searchBgImage from '../../components/SearchBgImage'
 import Todo from '../../components/Todo'
 import emoji from '../../../mixins/emoji'
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
 	mixins: [emoji],
@@ -100,6 +101,7 @@ export default {
 		this.initializeTagAutocompleteEditLabels()
 	},
 	methods: {
+		...mapActions(['getRandomImage', 'triggeringDownloadEndpoint']),
 		initializeTagAutocompleteEditLabels() {
 			this.todos.forEach(todo => {
 				$(`#edit-${todo.id}`).tagautocomplete({
@@ -128,50 +130,49 @@ export default {
 		removeTodo(todo) {
 			this.todos.splice(this.todos.indexOf(todo), 1)
 		},
+		loadBgImageDefault(heroBg) {
+			this.$localStorage.currentBg.destroy()
+			heroBg.src = this.defaultBgHigh
+			heroBg.classList.remove('blur')
+		},
 		handlePreloaderBoot() {
+			if (this.bgImage) {
+				this.loadNewImageInDom(this.bgImage)
+				return
+			}
+			this.getRandomImage('')
+				.then(imgObj => {
+					this.bgImage = imgObj
+					this.loadNewImageInDom(imgObj)
+				})
+				.catch(e => {
+					this.loadBgImageDefault(this.$refs.heroBg)
+				})
+		},
+
+		loadNewImageInDom(bgImage) {
 			let heroBg = this.$refs.heroBg
+			heroBg.classList.add('blur')
+			heroBg.src = bgImage.urls.small
 			let largeImg = new Image()
-			let newBg = this.bgImage ? this.bgImage.urls.full : this.defaultBgHigh
-			setTimeout(() => {
-				largeImg.src = newBg
-			}, 50)
+			largeImg.src = bgImage.urls.full
 			largeImg.onload = function() {
 				heroBg.src = this.src
 				heroBg.classList.remove('blur')
 			}
 			largeImg.onerror = () => {
-				this.$localStorage.currentBg.destroy()
-				heroBg.src = this.defaultBgHigh
-				heroBg.classList.remove('blur')
+				this.loadBgImageDefault(this.$refs.heroBg)
 			}
+			this.$localStorage.currentBg.save(bgImage)
 		},
 
-		async getRandomImage(query = '') {
-			if (!query) {
-				// TODO: make fn for handle empty, show some popup
-				console.log('empty query, show popup')
-				return
-			}
-			try {
-				this.bgImage = await this.$store.dispatch('getRandomImage', query)
-			} catch (error) {
-				console.log('invalid query, show popup')
-				return
-			}
-			await this.$store.dispatch(
-				'triggeringDownloadEndpoint',
-				this.bgImage.links.download_location
-			)
-			let heroBg = this.$refs.heroBg
-			heroBg.classList.add('blur')
-			heroBg.src = this.bgImage.urls.small
-			let largeImg = new Image()
-			largeImg.onload = function() {
-				heroBg.src = this.src
-				heroBg.classList.remove('blur')
-			}
-			largeImg.src = this.bgImage.urls.full
-			this.$localStorage.currentBg.save(this.bgImage)
+		async searchImage(query = '') {
+			this.getRandomImage(query)
+				.then(imgObj => {
+					this.bgImage = imgObj
+					this.loadNewImageInDom(imgObj)
+				})
+				.catch(e => this.loadBgImageDefault(this.$refs.heroBg))
 		}
 	}
 }

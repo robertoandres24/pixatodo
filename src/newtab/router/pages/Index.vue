@@ -32,7 +32,7 @@
         <a :href="linkToUnsplash">Unsplash</a>
       </span>
     </div>
-    <searchBgImage />
+    <searchBgImage @get-random-image="getRandomImage" />
   </div>
 </template>
 
@@ -146,10 +146,18 @@ export default {
 			}
 		},
 
-		async changeSelectedImage(query = '') {
-			let changeBgIcon = this.$refs.changeBgIcon
-			changeBgIcon.classList.add('loading')
-			this.bgImage = await this.$store.dispatch('getRandomImage', query)
+		async getRandomImage(query = '') {
+			if (!query) {
+				// TODO: make fn for handle empty, show some popup
+				console.log('empty query, show popup')
+				return
+			}
+			try {
+				this.bgImage = await this.$store.dispatch('getRandomImage', query)
+			} catch (error) {
+				console.log('invalid query, show popup')
+				return
+			}
 			await this.$store.dispatch(
 				'triggeringDownloadEndpoint',
 				this.bgImage.links.download_location
@@ -161,7 +169,6 @@ export default {
 			largeImg.onload = function() {
 				heroBg.src = this.src
 				heroBg.classList.remove('blur')
-				changeBgIcon.classList.remove('loading')
 			}
 			largeImg.src = this.bgImage.urls.full
 			this.$localStorage.currentBg.save(this.bgImage)

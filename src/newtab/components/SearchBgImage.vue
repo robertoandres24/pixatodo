@@ -4,10 +4,26 @@
       <span class="icon">
         <i class="icofont-search icofont-lg"></i>
       </span>
-      <input type="text" id="search" placeholder="Search..." />
+      <input
+        v-model="query"
+        @keyup.enter="$emit('get-random-image', query)"
+        type="text"
+        id="search"
+        placeholder="Search..."
+      />
     </div>
   </div>
 </template>
+
+<script>
+export default {
+	data() {
+		return {
+			query: ''
+		}
+	}
+}
+</script>
 
 <style lang="scss" scoped>
 /** Search input expandable  */

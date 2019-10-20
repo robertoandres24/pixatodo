@@ -6,7 +6,7 @@
       </span>
       <input
         v-model="query"
-        @keyup.enter="$emit('search-image', {$event, query})"
+        @keyup.enter="$emit('search-image', query)"
         type="text"
         id="search"
         placeholder="Search..."
@@ -19,7 +19,7 @@
 export default {
 	data() {
 		return {
-			query: ''
+			query: this.$localStorage.currentTag.fetch()
 		}
 	}
 }

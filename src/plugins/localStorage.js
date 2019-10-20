@@ -1,7 +1,8 @@
 import Vue from 'vue'
 // localStorage persistence
 var STORAGE_KEY = 'pixatodo-todos'
-var BGIMAGE_KEY = 'bgImage'
+var BGIMAGE_KEY = 'pixatodo-bg'
+var TAG_KEY = 'pixatodo-tag'
 var todoStorage = {
   fetch: function () {
     var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
@@ -17,8 +18,7 @@ var todoStorage = {
 }
 var currentBg = {
   fetch: function () {
-    var image = JSON.parse(localStorage.getItem(BGIMAGE_KEY))
-    return image
+    return JSON.parse(localStorage.getItem(BGIMAGE_KEY))
   },
   save: function (imgSource) {
     localStorage.setItem(BGIMAGE_KEY, JSON.stringify(imgSource))
@@ -27,4 +27,15 @@ var currentBg = {
     localStorage.removeItem(BGIMAGE_KEY)
   }
 }
-Vue.prototype.$localStorage = { todoStorage, currentBg }
+var currentTag = {
+  fetch: function () {
+    return JSON.parse(localStorage.getItem(TAG_KEY))
+  },
+  save: function (tag) {
+    localStorage.setItem(TAG_KEY, JSON.stringify(tag))
+  },
+  destroy: function () {
+    localStorage.removeItem(TAG_KEY)
+  }
+}
+Vue.prototype.$localStorage = { todoStorage, currentBg, currentTag }

@@ -51,6 +51,7 @@ export default {
 			newTodo: '',
 			todos: this.$localStorage.todoStorage.fetch(),
 			bgImage: this.$localStorage.currentBg.fetch(),
+			tag: this.$localStorage.currentTag.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
 			defaultBgHigh: '/static/images/best-friend-high.jpg',
 			persons: [
@@ -134,6 +135,7 @@ export default {
 			this.$localStorage.currentBg.destroy()
 			heroBg.src = this.defaultBgHigh
 			heroBg.classList.remove('blur')
+			this.$localStorage.currentTag.destroy()
 		},
 		handlePreloaderBoot() {
 			if (this.bgImage) {
@@ -171,6 +173,7 @@ export default {
 				.then(imgObj => {
 					this.bgImage = imgObj
 					this.loadNewImageInDom(imgObj)
+					this.$localStorage.currentTag.save(query)
 				})
 				.catch(e => this.loadBgImageDefault(this.$refs.heroBg))
 		}

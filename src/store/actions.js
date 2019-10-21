@@ -1,5 +1,14 @@
 import * as types from './mutation-types';
 import apiUnsplash from '../services/apiUnsplash'
+import axios from 'axios'
+
+export const getEmojis = () => {
+  return axios.get('/static/json/emoji.json')
+    .then(res => {
+      return res.data
+    })
+    .catch(e => console.log(e))
+}
 
 export const getRandomImage = ({ }, query) => {
   return new Promise((resolve, reject) => {

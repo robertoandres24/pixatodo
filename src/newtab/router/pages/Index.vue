@@ -54,13 +54,7 @@ export default {
 			tag: this.$localStorage.currentTag.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
 			defaultBgHigh: '/static/images/best-friend-high.jpg',
-			persons: [
-				{ name: 'guiño', emojiCode: '1F609' },
-				{ name: 'alegria', emojiCode: '1F602' },
-				{ name: 'cara invertida', emojiCode: '1F643' },
-				{ name: 'hash', emojiCode: '0023-FE0F-20E3' },
-				{ name: 'flag', emojiCode: '1F1E6-1F1E8' }
-			]
+			persons: []
 		}
 	},
 	computed: {
@@ -90,11 +84,13 @@ export default {
 		}
 	},
 	async mounted() {
+		this.persons = await this.getEmojis()
 		await this.handlePreloaderBoot()
 		$('div#createTodo').tagautocomplete({
 			source: this.persons,
 			character: ':', //accept both @ and #,
-			renderKey: 'emojiCode'
+			searchKey: 'short_name',
+			renderKey: 'unified'
 		})
 	},
 
@@ -102,13 +98,18 @@ export default {
 		this.initializeTagAutocompleteEditLabels()
 	},
 	methods: {
-		...mapActions(['getRandomImage', 'triggeringDownloadEndpoint']),
-		initializeTagAutocompleteEditLabels() {
+		...mapActions([
+			'getRandomImage',
+			'triggeringDownloadEndpoint',
+			'getEmojis'
+		]),
+		async initializeTagAutocompleteEditLabels() {
 			this.todos.forEach(todo => {
 				$(`#edit-${todo.id}`).tagautocomplete({
 					source: this.persons,
 					character: ':', //accept both @ and #,
-					renderKey: 'emojiCode'
+					searchKey: 'short_name',
+					renderKey: 'unified'
 				})
 			})
 		},

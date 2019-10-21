@@ -44,8 +44,8 @@
   Tagautocomplete.prototype = $.extend({}, $.fn.typeahead.Constructor.prototype, {
 
     constructor: Tagautocomplete
-    , searchKey: 'name'
-    , renderKey: 'code'
+    , searchKey: 'short_name'
+    , renderKey: 'unified'
     , process: function (items) {
       var that = this
       items = $.grep(items, function (item) {

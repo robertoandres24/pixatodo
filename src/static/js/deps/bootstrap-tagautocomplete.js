@@ -70,7 +70,7 @@
       var that = this
       items = $(items).map(function (i, item) {
         i = $(that.options.item).attr('data-value', that.parsedEmoji(item[that.renderKey]))
-        i.find('a').html(`<span>${that.parsedEmoji(item[that.renderKey])} </span>` + that.highlighter(item[that.searchKey]))
+        i.find('a').html(`<span>${that.parsedEmoji(item[that.renderKey])}</span>` + that.highlighter(item[that.searchKey]))
         return i[0]
       })
       items.first().addClass('active')

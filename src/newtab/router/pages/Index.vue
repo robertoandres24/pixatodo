@@ -54,7 +54,7 @@ export default {
 			tag: this.$localStorage.currentTag.fetch(),
 			defaultBgLow: '/static/images/best-friend-low.jpg',
 			defaultBgHigh: '/static/images/best-friend-high.jpg',
-			persons: []
+			emojis: []
 		}
 	},
 	computed: {
@@ -84,16 +84,16 @@ export default {
 		}
 	},
 	async mounted() {
-		this.persons = await this.getEmojis()
+		this.emojis = await this.getEmojis()
 		await this.handlePreloaderBoot()
 		$('div#createTodo').tagautocomplete({
-			source: this.persons,
+			source: this.emojis,
 			character: ':', //accept both @ and #,
 			searchKey: 'short_name',
 			renderKey: 'unified'
 		})
+		this.initializeTagAutocompleteEditLabels()
 	},
-
 	updated() {
 		this.initializeTagAutocompleteEditLabels()
 	},
@@ -103,10 +103,10 @@ export default {
 			'triggeringDownloadEndpoint',
 			'getEmojis'
 		]),
-		async initializeTagAutocompleteEditLabels() {
+		initializeTagAutocompleteEditLabels() {
 			this.todos.forEach(todo => {
 				$(`#edit-${todo.id}`).tagautocomplete({
-					source: this.persons,
+					source: this.emojis,
 					character: ':', //accept both @ and #,
 					searchKey: 'short_name',
 					renderKey: 'unified'
